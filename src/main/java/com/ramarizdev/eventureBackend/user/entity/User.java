@@ -15,37 +15,25 @@ import lombok.Setter;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_gen")
-    @SequenceGenerator(name = "user_id_seq", sequenceName = "user_id_seq")
+    @SequenceGenerator(name = "user_id_gen", sequenceName = "user_id_seq", allocationSize = 1)
     private Long id;
 
     @NotNull
     @NotBlank
-    @Column(name = "name")
-    private String name;
+    @Column(name = "email", nullable = false)
+    private String email;
 
     @NotNull
     @NotBlank
-    @Column(name = "email")
-    private String email;
+    @Column(name = "password", nullable = false)
+    private String password;
 
-    @Column(name = "phone")
-    private String phone;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private UserRole role;
 
-    @Column(name = "gender")
-    private String gender;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Attendee attendee;
 
-    @Column(name = "age")
-    private Integer age;
-
-    @Column(name = "address")
-    private String address;
-
-    @Column(name = "province")
-    private String province;
-
-    @Column(name = "city")
-    private String city;
-
-    @Column(name = "referral_code")
-    private String referralCode;
 }
+
