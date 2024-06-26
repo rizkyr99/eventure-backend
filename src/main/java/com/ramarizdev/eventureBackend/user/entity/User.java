@@ -20,7 +20,7 @@ public class User {
 
     @NotNull
     @NotBlank
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @NotNull
@@ -32,7 +32,7 @@ public class User {
     @Column(name = "role", nullable = false)
     private UserRole role;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Attendee attendee;
 
 }
