@@ -42,7 +42,6 @@ public class AuthServiceImpl implements AuthService {
                 .claim("userId", userRepository.findByEmail(authentication.getName()).get().getId())
                 .build();
 
-        var jwt = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
-        return jwt;
+        return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 }
