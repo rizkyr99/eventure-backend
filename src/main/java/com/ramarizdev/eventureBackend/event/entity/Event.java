@@ -1,5 +1,6 @@
 package com.ramarizdev.eventureBackend.event.entity;
 
+import com.ramarizdev.eventureBackend.category.entity.Category;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -8,11 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Data

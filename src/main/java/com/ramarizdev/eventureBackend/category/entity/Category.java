@@ -1,5 +1,6 @@
-package com.ramarizdev.eventureBackend.event.entity;
+package com.ramarizdev.eventureBackend.category.entity;
 
+import com.ramarizdev.eventureBackend.event.entity.Event;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
