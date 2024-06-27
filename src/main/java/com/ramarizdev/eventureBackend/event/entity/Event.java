@@ -54,6 +54,10 @@ public class Event {
     @Column(name = "description", nullable = false)
     private String description;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
+
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<TicketType> ticketTypes;
 }
