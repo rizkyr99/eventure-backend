@@ -7,8 +7,12 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -32,17 +36,24 @@ public class Event {
     @Column(name = "image")
     private String image;
 
-    @Column(name = "start_date")
-    private Date startDate;
+    @NotNull
+    @Column(name = "start_date", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private LocalDate startDate;
 
-    @Column(name = "end_date")
-    private Date endDate;
+    @NotNull
+    @Column(name = "end_date", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private LocalDate endDate;
 
-    @Column(name = "location")
+    @NotNull
+    @Column(name = "location", nullable = false)
     private String location;
 
-    @Column(name = "description")
+    @NotNull
+    @Column(name = "description", nullable = false)
     private String description;
 
-
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private List<TicketType> ticketTypes;
 }

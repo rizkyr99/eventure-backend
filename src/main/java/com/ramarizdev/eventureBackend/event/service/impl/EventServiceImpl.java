@@ -6,6 +6,8 @@ import com.ramarizdev.eventureBackend.event.repository.EventRepository;
 import com.ramarizdev.eventureBackend.event.service.EventService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
@@ -15,8 +17,15 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Event createEvent(EventRequestDto eventRequestDto) {
-        Event event = new Event();
-        return event;
+    public List<Event> getAllEvents() {
+        return eventRepository.findAll();
+    }
+
+    @Override
+    public Event createEvent(EventRequestDto requestDto) {
+        Event event = requestDto.toEntity();
+        Event newEvent = eventRepository.save(event);
+
+        return newEvent;
     }
 }
