@@ -2,6 +2,8 @@ package com.ramarizdev.eventureBackend.auth.service.impl;
 
 import com.ramarizdev.eventureBackend.auth.service.AuthService;
 import com.ramarizdev.eventureBackend.user.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class AuthServiceImpl implements AuthService {
+    private static final Logger log = LoggerFactory.getLogger(AuthServiceImpl.class);
     private final JwtEncoder jwtEncoder;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
@@ -28,7 +31,7 @@ public class AuthServiceImpl implements AuthService {
 
     public String generateToken(Authentication authentication) {
         Instant now = Instant.now();
-        String scope  =  authentication.getAuthorities()
+        String role  =  authentication.getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(" "));
@@ -38,7 +41,7 @@ public class AuthServiceImpl implements AuthService {
                 .issuedAt(now)
                 .expiresAt(now.plus(1, ChronoUnit.HOURS))
                 .subject(authentication.getName())
-                .claim("scope", scope)
+                .claim("role", role)
                 .claim("userId", userRepository.findByEmail(authentication.getName()).get().getId())
                 .build();
 

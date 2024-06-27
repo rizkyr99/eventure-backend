@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,7 +47,7 @@ public class AuthController {
         ctx.setAuthentication(authentication);
 
         UserAuth userDetails = (UserAuth) authentication.getPrincipal();
-        log.info("Token requested for user : " + userDetails.getEmail() + " with roles: " + userDetails.getAuthorities().toArray()[0]);
+        log.info("Token requested for user : " + userDetails.getEmail() + " with roles: " + userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).findFirst().orElse("ROLE_USER"));
         String token = authService.generateToken(authentication);
 
         LoginResponseDto response = new LoginResponseDto();

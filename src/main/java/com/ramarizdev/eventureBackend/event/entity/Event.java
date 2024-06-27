@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.OffsetDateTime;
+import java.util.Date;
 
 @Entity
 @Data
@@ -32,10 +33,10 @@ public class Event {
     private String image;
 
     @Column(name = "start_date")
-    private OffsetDateTime startDate;
+    private Date startDate;
 
     @Column(name = "end_date")
-    private OffsetDateTime endDate;
+    private Date endDate;
 
     @Column(name = "location")
     private String location;

@@ -1,13 +1,16 @@
 package com.ramarizdev.eventureBackend.auth.entity;
 
 import com.ramarizdev.eventureBackend.user.entity.User;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
 
+@Getter
 public class UserAuth extends User implements UserDetails {
     private final User user;
 
@@ -17,9 +20,11 @@ public class UserAuth extends User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        ArrayList<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(() -> "ROLE_USER");
-        return authorities;
+        return Collections.singleton(new SimpleGrantedAuthority(user.getRole().name()));
+    }
+
+    public String getEmail() {
+        return user.getEmail();
     }
 
     @Override
