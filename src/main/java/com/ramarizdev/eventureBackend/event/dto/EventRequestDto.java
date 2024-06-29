@@ -1,13 +1,13 @@
 package com.ramarizdev.eventureBackend.event.dto;
 
 import com.ramarizdev.eventureBackend.event.entity.Event;
+import com.ramarizdev.eventureBackend.event.entity.TicketType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.List;
 
 @Data
 public class EventRequestDto {
@@ -26,6 +26,10 @@ public class EventRequestDto {
     private String location;
 
     private String description;
+
+    private Long category;
+
+    private List<TicketType> ticketTypes;
 
     public Event toEntity() {
         Event event = new Event();

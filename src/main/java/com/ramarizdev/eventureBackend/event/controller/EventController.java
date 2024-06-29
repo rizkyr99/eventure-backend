@@ -6,6 +6,7 @@ import com.ramarizdev.eventureBackend.event.service.impl.EventServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -29,8 +30,8 @@ public class EventController {
         return ResponseEntity.ok().body(events);
     }
 
-    @PostMapping()
-    public ResponseEntity<Event> createEvent(@RequestBody EventRequestDto requestDto) {
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Event> createEvent(@ModelAttribute EventRequestDto requestDto) {
         Event event = eventService.createEvent(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(event);
     }
