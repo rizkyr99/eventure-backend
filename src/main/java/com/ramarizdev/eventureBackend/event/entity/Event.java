@@ -52,6 +52,10 @@ public class Event {
     @Column(name = "description", nullable = false)
     private String description;
 
+    @NotNull
+    @Column(name = "is_free", nullable = false)
+    private Boolean isFree = false;
+
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;

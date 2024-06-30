@@ -7,6 +7,7 @@ import com.ramarizdev.eventureBackend.event.entity.Event;
 import java.util.List;
 
 public interface EventService {
-    List<EventResponseDto> getAllEvents();
+    List<EventResponseDto> getAllEvents(String categorySlug, String location, boolean isFree);
+
     EventResponseDto createEvent(EventRequestDto eventRequestDto);
 }

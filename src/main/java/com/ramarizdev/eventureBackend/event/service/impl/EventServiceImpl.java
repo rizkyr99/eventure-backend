@@ -31,8 +31,12 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventResponseDto> getAllEvents() {
-        return eventRepository.findAll().stream().map(Event::toDto).collect(Collectors.toList());
+    public List<EventResponseDto> getAllEvents(String categorySlug, String location, boolean isFree) {
+        return eventRepository.findAll().stream()
+                .filter(event -> categorySlug == null || event.getCategory().getSlug().equals(categorySlug))
+                .filter(event -> location == null || event.getLocation().equals(location))
+                .filter(event -> !isFree || event.getIsFree())
+                .map(Event::toDto).collect(Collectors.toList());
     }
 
     @Override
