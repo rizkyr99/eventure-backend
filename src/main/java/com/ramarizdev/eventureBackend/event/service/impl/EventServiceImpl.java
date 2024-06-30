@@ -4,6 +4,7 @@ import com.cloudinary.Cloudinary;
 import com.ramarizdev.eventureBackend.category.entity.Category;
 import com.ramarizdev.eventureBackend.category.repository.CategoryRepository;
 import com.ramarizdev.eventureBackend.event.dto.EventRequestDto;
+import com.ramarizdev.eventureBackend.event.dto.EventResponseDto;
 import com.ramarizdev.eventureBackend.event.entity.Event;
 import com.ramarizdev.eventureBackend.event.entity.TicketType;
 import com.ramarizdev.eventureBackend.event.repository.EventRepository;
@@ -30,12 +31,12 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<Event> getAllEvents() {
-        return eventRepository.findAll();
+    public List<EventResponseDto> getAllEvents() {
+        return eventRepository.findAll().stream().map(Event::toDto).collect(Collectors.toList());
     }
 
     @Override
-    public Event createEvent(EventRequestDto requestDto) {
+    public EventResponseDto createEvent(EventRequestDto requestDto) {
         Event event = requestDto.toEntity();
 
         Category category = categoryRepository.findById(requestDto.getCategory()).orElseThrow(
@@ -61,7 +62,10 @@ public class EventServiceImpl implements EventService {
         event.setTicketTypes(ticketTypes);
 
         Event newEvent = eventRepository.save(event);
-        return newEvent;
+
+        EventResponseDto responseDto = newEvent.toDto();
+
+        return responseDto;
     }
 
     private String uploadFile(MultipartFile file, String folderName) {

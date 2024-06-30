@@ -31,6 +31,6 @@ public class Category {
     @Column(name = "slug", nullable = false, unique = true)
     private String slug;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Event> events;
 }

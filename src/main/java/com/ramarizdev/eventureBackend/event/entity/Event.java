@@ -1,6 +1,7 @@
 package com.ramarizdev.eventureBackend.event.entity;
 
 import com.ramarizdev.eventureBackend.category.entity.Category;
+import com.ramarizdev.eventureBackend.event.dto.EventResponseDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -57,4 +58,18 @@ public class Event {
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<TicketType> ticketTypes;
+
+    public EventResponseDto toDto() {
+        EventResponseDto responseDto = new EventResponseDto();
+
+        responseDto.setId(id);
+        responseDto.setName(name);
+        responseDto.setImage(image);
+        responseDto.setStartDate(startDate);
+        responseDto.setEndDate(endDate);
+        responseDto.setLocation(location);
+        responseDto.setDescription(description);
+        responseDto.setCategory(category.getId().toString());
+        return responseDto;
+    }
 }

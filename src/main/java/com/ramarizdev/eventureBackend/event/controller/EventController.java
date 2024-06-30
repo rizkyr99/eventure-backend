@@ -1,6 +1,7 @@
 package com.ramarizdev.eventureBackend.event.controller;
 
 import com.ramarizdev.eventureBackend.event.dto.EventRequestDto;
+import com.ramarizdev.eventureBackend.event.dto.EventResponseDto;
 import com.ramarizdev.eventureBackend.event.entity.Event;
 import com.ramarizdev.eventureBackend.event.service.impl.EventServiceImpl;
 import org.slf4j.Logger;
@@ -25,14 +26,14 @@ public class EventController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<Event>> getAllEvents(@RequestParam(required = false) String category, @RequestParam(required = false) String location) {
-        List<Event> events = eventService.getAllEvents();
+    public ResponseEntity<List<EventResponseDto>> getAllEvents(@RequestParam(required = false) String category, @RequestParam(required = false) String location) {
+        List<EventResponseDto> events = eventService.getAllEvents();
         return ResponseEntity.ok().body(events);
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Event> createEvent(@ModelAttribute EventRequestDto requestDto) {
-        Event event = eventService.createEvent(requestDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(event);
+    public ResponseEntity<EventResponseDto> createEvent(@ModelAttribute EventRequestDto requestDto) {
+        EventResponseDto responseDto = eventService.createEvent(requestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 }
