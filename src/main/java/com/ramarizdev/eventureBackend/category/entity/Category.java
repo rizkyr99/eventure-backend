@@ -1,5 +1,6 @@
 package com.ramarizdev.eventureBackend.category.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ramarizdev.eventureBackend.event.entity.Event;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -31,6 +32,7 @@ public class Category {
     @Column(name = "slug", nullable = false, unique = true)
     private String slug;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Event> events;
 }
