@@ -5,6 +5,7 @@ import com.ramarizdev.eventureBackend.event.entity.TicketType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,7 +18,7 @@ public class EventRequestDto {
 
     @NotNull
     @NotBlank
-    private String image;
+    private MultipartFile image;
 
     private LocalDate startDate;
 
@@ -34,7 +35,7 @@ public class EventRequestDto {
     public Event toEntity() {
         Event event = new Event();
         event.setName(name);
-        event.setImage(image);
+//        event.setImage(image.getOriginalFilename());
         event.setStartDate(startDate);
         event.setEndDate(endDate);
         event.setLocation(location);
