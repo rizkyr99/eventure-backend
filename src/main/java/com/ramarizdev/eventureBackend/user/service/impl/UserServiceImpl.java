@@ -7,12 +7,21 @@ import com.ramarizdev.eventureBackend.user.repository.OrganizerRepository;
 import com.ramarizdev.eventureBackend.user.repository.ReferralCodeRepository;
 import com.ramarizdev.eventureBackend.user.repository.UserRepository;
 import com.ramarizdev.eventureBackend.user.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class UserServiceImpl implements UserService {
+    private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserRepository userRepository;
     private final AttendeeRepository attendeeRepository;
     private final OrganizerRepository organizerRepository;
@@ -29,32 +38,50 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public User register(RegisterRequestDto requestDto) {
-        User user = userRepository.save(requestDto.toEntity());
-        var password = passwordEncoder.encode(requestDto.getPassword());
+        User user = requestDto.toEntity();
+        String password = passwordEncoder.encode(requestDto.getPassword());
         user.setPassword(password);
-        User newUser = userRepository.save(user);
 
         if(requestDto.getRole() == UserRole.ATTENDEE) {
             Attendee attendee = new Attendee();
             attendee.setName(requestDto.getName());
-            attendee.setUser(newUser);
+            attendee.setUser(user);
             attendee.setTotalPoints(0);
 
-            ReferralCode referralCode = requestDto.generateReferralCode();
-            referralCode.setAttendee(attendee);
+            if(requestDto.getReferralCode() != null) {
+                Optional<ReferralCode> referralCode = referralCodeRepository.findByCode(requestDto.getReferralCode());
+                if(referralCode.isPresent() && referralCode.get().getAttendee() != null) {
+                    Attendee referrerAttendee = referralCode.get().getAttendee();
 
-            referralCodeRepository.save(referralCode);
+                    referrerAttendee.setTotalPoints(referrerAttendee.getTotalPoints() + 10000);
+//
+                    Point point = new Point();
+                    point.setAmount(10000);
+                    point.setAttendee(referrerAttendee);
+                    point.setCreatedAt(Instant.now());
+                    point.setExpiredAt(Instant.now().atZone(ZoneOffset.UTC).plusMonths(3).toInstant());
 
-            attendee.setReferralCode(referralCode);
+                    referrerAttendee.getPoints().add(point);
 
-            attendeeRepository.save(attendee);
+                    attendeeRepository.save(referrerAttendee);
+                }
+
+
+            }
+
+            ReferralCode newReferralCode = requestDto.generateReferralCode();
+            newReferralCode.setAttendee(attendee);
+
+            attendee.setReferralCode(newReferralCode);
+            user.setAttendee(attendee);
         } else {
             Organizer organizer = new Organizer();
             organizer.setName(requestDto.getName());
-            organizer.setUser(newUser);
-            organizerRepository.save(organizer);
+            organizer.setUser(user);
+
+            user.setOrganizer(organizer);
         }
 
-        return newUser;
+        return userRepository.save(user);
     }
 }

@@ -59,6 +59,6 @@ public class Attendee {
     @Column(name = "total_points", nullable = false)
     private Integer totalPoints = 0;
 
-    @OneToMany(mappedBy = "attendee", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "attendee", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Point> points = new ArrayList<>();
 }

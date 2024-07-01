@@ -23,19 +23,15 @@ public class Point {
     private Long id;
 
     @NotNull
-    @NotBlank
     @Column(name = "amount", nullable = false)
-    private Double amount;
+    private Integer amount;
 
-    @NotNull
-    @NotBlank
     @CreationTimestamp
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
     @NotNull
-    @NotBlank
-    @Column(name = "expired_at")
+    @Column(name = "expired_at", nullable = false)
     private Instant expiredAt;
 
     @ManyToOne
