@@ -38,9 +38,11 @@ public class UserServiceImpl implements UserService {
             Attendee attendee = new Attendee();
             attendee.setName(requestDto.getName());
             attendee.setUser(newUser);
+            attendee.setTotalPoints(0);
 
             ReferralCode referralCode = requestDto.generateReferralCode();
             referralCode.setAttendee(attendee);
+
             referralCodeRepository.save(referralCode);
 
             attendee.setReferralCode(referralCode);

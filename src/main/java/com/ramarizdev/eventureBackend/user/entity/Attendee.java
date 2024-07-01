@@ -7,6 +7,9 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @Getter
@@ -51,4 +54,11 @@ public class Attendee {
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
+
+    @NotNull
+    @Column(name = "total_points", nullable = false)
+    private Integer totalPoints = 0;
+
+    @OneToMany(mappedBy = "attendee", cascade = CascadeType.ALL)
+    private List<Point> points = new ArrayList<>();
 }
