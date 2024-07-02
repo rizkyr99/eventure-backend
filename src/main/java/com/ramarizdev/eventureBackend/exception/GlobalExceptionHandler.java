@@ -2,6 +2,7 @@ package com.ramarizdev.eventureBackend.exception;
 
 import com.ramarizdev.eventureBackend.response.Response;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -31,4 +32,24 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Response<String>> handleBadCredentialsException(BadCredentialsException exception) {
         return Response.failed(HttpStatus.BAD_REQUEST.value(), "Invalid email or password");
     }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Response<Object>> handleDataIntegrityViolationException(DataIntegrityViolationException exception) {
+        String message = extractErrorMessage(exception);
+
+        return Response.failed(HttpStatus.CONFLICT.value(), message);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Response<String>> handleGeneralException(Exception exception) {
+        return Response.failed(HttpStatus.INTERNAL_SERVER_ERROR.value(),"Unexpected error occurred");
+    }
+
+    private String extractErrorMessage(DataIntegrityViolationException ex) {
+        if (ex.getMessage().contains("unique constraint")) {
+            return "Duplicate value violation: " + ex.getMostSpecificCause().getMessage();
+        }
+        return "Data integrity violation: " + ex.getMostSpecificCause().getMessage();
+    }
 }
+

@@ -4,6 +4,7 @@ import com.ramarizdev.eventureBackend.user.entity.ReferralCode;
 import com.ramarizdev.eventureBackend.user.entity.User;
 import com.ramarizdev.eventureBackend.user.entity.UserRole;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -17,7 +18,6 @@ public class RegisterRequestDto implements Serializable {
     @NotBlank(message = "Name is required")
     private String name;
 
-    @NotBlank(message = "Role is required")
     private UserRole role;
 
     @NotBlank(message = "Password is required")

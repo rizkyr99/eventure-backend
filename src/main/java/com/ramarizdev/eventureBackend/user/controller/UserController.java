@@ -4,6 +4,7 @@ import com.ramarizdev.eventureBackend.response.Response;
 import com.ramarizdev.eventureBackend.user.dto.RegisterRequestDto;
 import com.ramarizdev.eventureBackend.user.entity.User;
 import com.ramarizdev.eventureBackend.user.service.UserService;
+import jakarta.validation.Valid;
 import lombok.extern.java.Log;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -24,7 +25,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Response<User>> register(@RequestBody RegisterRequestDto requestDto) {
+    public ResponseEntity<Response<User>> register(@Valid @RequestBody RegisterRequestDto requestDto) {
         User user = userService.register(requestDto);
 //        return ResponseEntity.ok().body(user);
         return Response.success("User registered successfully", user);
