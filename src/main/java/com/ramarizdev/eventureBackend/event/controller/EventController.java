@@ -27,8 +27,8 @@ public class EventController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<EventResponseDto>> getAllEvents(@RequestParam(required = false) String category, @RequestParam(required = false) String location, @RequestParam(required = false, defaultValue = "false") boolean isFree) {
-        List<EventResponseDto> events = eventService.getAllEvents(category, location, isFree);
+    public ResponseEntity<List<EventResponseDto>> getAllEvents(@RequestParam(required = false) String category, @RequestParam(required = false) String location, @RequestParam(required = false, defaultValue = "false") boolean isFree, @RequestParam(required = false) String search) {
+        List<EventResponseDto> events = eventService.getAllEvents(category, location, isFree, search);
         return ResponseEntity.ok().body(events);
     }
 

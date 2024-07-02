@@ -31,11 +31,12 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventResponseDto> getAllEvents(String categorySlug, String location, boolean isFree) {
+    public List<EventResponseDto> getAllEvents(String categorySlug, String location, boolean isFree, String search) {
         return eventRepository.findAll().stream()
                 .filter(event -> categorySlug == null || event.getCategory().getSlug().equals(categorySlug))
                 .filter(event -> location == null || event.getLocation().equals(location))
                 .filter(event -> !isFree || event.getIsFree())
+                .filter(event -> search == null || event.getName().toLowerCase().contains(search.toLowerCase()))
                 .map(Event::toDto).collect(Collectors.toList());
     }
 
