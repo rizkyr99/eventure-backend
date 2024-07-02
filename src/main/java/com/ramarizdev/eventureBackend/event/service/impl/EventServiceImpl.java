@@ -101,7 +101,7 @@ public class EventServiceImpl implements EventService {
             options.put("folder", folderName);
             Map uploadedFile = cloudinary.uploader().upload(file.getBytes(), options);
             String publicId = (String) uploadedFile.get("public_id");
-            return cloudinary.url().secure(true).generate(publicId);
+            return publicId;
         } catch(IOException e) {
             e.printStackTrace();
             return null;
