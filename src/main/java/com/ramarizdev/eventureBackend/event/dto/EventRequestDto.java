@@ -8,6 +8,7 @@ import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Data
@@ -26,6 +27,12 @@ public class EventRequestDto {
     private LocalDate endDate;
 
     @NotNull
+    private LocalTime startTime;
+
+    @NotNull
+    private LocalTime endTime;
+
+    @NotNull
     @NotBlank
     private String location;
 
@@ -42,6 +49,8 @@ public class EventRequestDto {
 //        event.setImage(image.getOriginalFilename());
         event.setStartDate(startDate);
         event.setEndDate(endDate);
+        event.setStartTime(startTime);
+        event.setEndTime(endTime);
         event.setLocation(location);
         event.setDescription(description);
         return event;

@@ -7,6 +7,7 @@ import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Data
@@ -19,6 +20,10 @@ public class EventResponseDto {
     private LocalDate startDate;
 
     private LocalDate endDate;
+
+    private LocalTime startTime;
+
+    private LocalTime endTime;
 
     private String location;
 

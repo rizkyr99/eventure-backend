@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Entity
@@ -36,13 +37,19 @@ public class Event {
 
     @NotNull
     @Column(name = "start_date", nullable = false)
-    @Temporal(TemporalType.DATE)
     private LocalDate startDate;
 
     @NotNull
     @Column(name = "end_date", nullable = false)
-    @Temporal(TemporalType.DATE)
     private LocalDate endDate;
+
+    @NotNull
+    @Column(name = "start_time", nullable = false)
+    private LocalTime startTime;
+
+    @NotNull
+    @Column(name = "end_time", nullable = false)
+    private LocalTime endTime;
 
     @NotNull
     @Column(name = "location", nullable = false)
@@ -71,6 +78,8 @@ public class Event {
         responseDto.setImage(image);
         responseDto.setStartDate(startDate);
         responseDto.setEndDate(endDate);
+        responseDto.setStartTime(startTime);
+        responseDto.setEndTime(endTime);
         responseDto.setLocation(location);
         responseDto.setDescription(description);
         responseDto.setCategory(category.getId().toString());
