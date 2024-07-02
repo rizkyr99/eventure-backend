@@ -10,6 +10,9 @@ import com.ramarizdev.eventureBackend.event.entity.TicketType;
 import com.ramarizdev.eventureBackend.event.repository.EventRepository;
 import com.ramarizdev.eventureBackend.event.service.EventService;
 import com.ramarizdev.eventureBackend.event.specification.EventSpecification;
+import com.ramarizdev.eventureBackend.user.entity.Organizer;
+import com.ramarizdev.eventureBackend.user.repository.OrganizerRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -28,11 +31,13 @@ import java.util.stream.Collectors;
 public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final CategoryRepository categoryRepository;
+    private final OrganizerRepository organizerRepository;
     private final Cloudinary cloudinary;
 
-    public EventServiceImpl(EventRepository eventRepository, CategoryRepository categoryRepository, Cloudinary cloudinary) {
+    public EventServiceImpl(EventRepository eventRepository, CategoryRepository categoryRepository, OrganizerRepository organizerRepository, Cloudinary cloudinary) {
         this.eventRepository = eventRepository;
         this.categoryRepository = categoryRepository;
+        this.organizerRepository = organizerRepository;
         this.cloudinary = cloudinary;
     }
 
@@ -63,7 +68,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventResponseDto createEvent(EventRequestDto requestDto) {
+    public EventResponseDto createEvent(EventRequestDto requestDto, Long organizerId) {
         Event event = requestDto.toEntity();
 
         Category category = categoryRepository.findById(requestDto.getCategory()).orElseThrow(
@@ -75,6 +80,9 @@ public class EventServiceImpl implements EventService {
         String imageUrl = uploadFile(requestDto.getImage(), "events");
 
         event.setImage(imageUrl);
+
+        Organizer organizer = organizerRepository.findById(organizerId).orElseThrow(() -> new IllegalArgumentException("Organizer not found"));
+        event.setOrganizer(organizer);
 
         List<TicketType> ticketTypes = requestDto.getTicketTypes().stream().map(
                 ticketType -> {
@@ -95,6 +103,12 @@ public class EventServiceImpl implements EventService {
         return responseDto;
     }
 
+    @Override
+    public void deleteEvent(Long eventId, String currentUserEmail) {
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new EntityNotFoundException("Event not found with id: " + eventId));
+
+    }
+
     private String uploadFile(MultipartFile file, String folderName) {
         try {
             HashMap<Object, Object> options = new HashMap<>();
@@ -107,4 +121,5 @@ public class EventServiceImpl implements EventService {
             return null;
         }
     }
+
 }

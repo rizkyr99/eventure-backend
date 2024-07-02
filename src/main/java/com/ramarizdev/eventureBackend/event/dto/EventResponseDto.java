@@ -30,4 +30,6 @@ public class EventResponseDto {
     private String description;
 
     private String category;
+
+    private String organizer;
 }

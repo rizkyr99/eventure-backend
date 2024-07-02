@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface EventService {
     Page<EventResponseDto> getAllEvents(String categorySlug, String location, boolean isFree, String search, int page, int size);
-
-    EventResponseDto createEvent(EventRequestDto eventRequestDto);
+    EventResponseDto createEvent(EventRequestDto eventRequestDto, Long organizerId);
+    void deleteEvent(Long eventId, String currentUserEmail);
 }

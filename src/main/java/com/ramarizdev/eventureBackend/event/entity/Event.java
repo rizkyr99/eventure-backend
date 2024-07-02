@@ -2,6 +2,7 @@ package com.ramarizdev.eventureBackend.event.entity;
 
 import com.ramarizdev.eventureBackend.category.entity.Category;
 import com.ramarizdev.eventureBackend.event.dto.EventResponseDto;
+import com.ramarizdev.eventureBackend.user.entity.Organizer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -64,6 +65,10 @@ public class Event {
     private Boolean isFree = false;
 
     @ManyToOne
+    @JoinColumn(name = "organizer_id", nullable = false)
+    private Organizer organizer;
+
+    @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
@@ -82,7 +87,8 @@ public class Event {
         responseDto.setEndTime(endTime);
         responseDto.setLocation(location);
         responseDto.setDescription(description);
-        responseDto.setCategory(category.getId().toString());
+        responseDto.setCategory(category.getName());
+        responseDto.setOrganizer(organizer.getName());
         return responseDto;
     }
 }
