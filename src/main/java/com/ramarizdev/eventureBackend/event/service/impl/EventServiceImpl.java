@@ -9,6 +9,12 @@ import com.ramarizdev.eventureBackend.event.entity.Event;
 import com.ramarizdev.eventureBackend.event.entity.TicketType;
 import com.ramarizdev.eventureBackend.event.repository.EventRepository;
 import com.ramarizdev.eventureBackend.event.service.EventService;
+import com.ramarizdev.eventureBackend.event.specification.EventSpecification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,13 +37,29 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventResponseDto> getAllEvents(String categorySlug, String location, boolean isFree, String search) {
-        return eventRepository.findAll().stream()
-                .filter(event -> categorySlug == null || event.getCategory().getSlug().equals(categorySlug))
-                .filter(event -> location == null || event.getLocation().equals(location))
-                .filter(event -> !isFree || event.getIsFree())
-                .filter(event -> search == null || event.getName().toLowerCase().contains(search.toLowerCase()))
-                .map(Event::toDto).collect(Collectors.toList());
+    public Page<EventResponseDto> getAllEvents(String categorySlug, String location, boolean isFree, String search, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        Specification<Event> spec = Specification.where(null);
+
+        if(categorySlug != null && !categorySlug.isEmpty()) {
+            spec = spec.and(EventSpecification.hasCategory(categorySlug));
+        }
+        if (location != null && !location.isEmpty()) {
+            spec = spec.and(EventSpecification.hasLocation(location));
+        }
+        spec = spec.and(EventSpecification.isFree(isFree));
+
+        if (search != null && !search.isEmpty()) {
+            spec = spec.and(EventSpecification.containsKeyword(search));
+        }
+
+
+        Page<Event> eventPage = eventRepository.findAll(spec,pageable);
+
+        List<EventResponseDto> eventResponseDtos = eventPage.getContent().stream().map(Event::toDto).collect(Collectors.toList());
+
+        return new PageImpl<>(eventResponseDtos, pageable, eventPage.getTotalElements());
     }
 
     @Override

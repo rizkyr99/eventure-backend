@@ -4,9 +4,11 @@ import com.ramarizdev.eventureBackend.event.dto.EventRequestDto;
 import com.ramarizdev.eventureBackend.event.dto.EventResponseDto;
 import com.ramarizdev.eventureBackend.event.entity.Event;
 import com.ramarizdev.eventureBackend.event.service.impl.EventServiceImpl;
+import com.ramarizdev.eventureBackend.response.Response;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +29,9 @@ public class EventController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<EventResponseDto>> getAllEvents(@RequestParam(required = false) String category, @RequestParam(required = false) String location, @RequestParam(required = false, defaultValue = "false") boolean isFree, @RequestParam(required = false) String search) {
-        List<EventResponseDto> events = eventService.getAllEvents(category, location, isFree, search);
-        return ResponseEntity.ok().body(events);
+    public ResponseEntity<Response<Page<EventResponseDto>>> getAllEvents(@RequestParam(required = false) String category, @RequestParam(required = false) String location, @RequestParam(required = false, defaultValue = "false") boolean isFree, @RequestParam(required = false) String search, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size) {
+        Page<EventResponseDto> events = eventService.getAllEvents(category, location, isFree, search, page - 1, size);
+        return Response.success("List of events fetched", events);
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
