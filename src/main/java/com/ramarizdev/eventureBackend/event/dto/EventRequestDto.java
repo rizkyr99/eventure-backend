@@ -46,7 +46,6 @@ public class EventRequestDto {
     public Event toEntity() {
         Event event = new Event();
         event.setName(name);
-//        event.setImage(image.getOriginalFilename());
         event.setStartDate(startDate);
         event.setEndDate(endDate);
         event.setStartTime(startTime);

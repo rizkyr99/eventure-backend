@@ -4,7 +4,6 @@ import com.ramarizdev.eventureBackend.auth.dto.LoginRequestDto;
 import com.ramarizdev.eventureBackend.auth.dto.LoginResponseDto;
 import com.ramarizdev.eventureBackend.auth.entity.UserAuth;
 import com.ramarizdev.eventureBackend.auth.service.AuthService;
-import com.ramarizdev.eventureBackend.user.entity.User;
 import jakarta.servlet.http.Cookie;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpHeaders;
