@@ -17,17 +17,21 @@ public class EventRequestDto {
     private String name;
 
     @NotNull
-    @NotBlank
     private MultipartFile image;
 
+    @NotNull
     private LocalDate startDate;
 
+    @NotNull
     private LocalDate endDate;
 
+    @NotNull
+    @NotBlank
     private String location;
 
     private String description;
 
+    @NotNull
     private Long category;
 
     private List<TicketType> ticketTypes;

@@ -4,6 +4,7 @@ import com.ramarizdev.eventureBackend.event.dto.EventRequestDto;
 import com.ramarizdev.eventureBackend.event.dto.EventResponseDto;
 import com.ramarizdev.eventureBackend.event.entity.Event;
 import com.ramarizdev.eventureBackend.event.service.impl.EventServiceImpl;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,7 @@ public class EventController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<EventResponseDto> createEvent(@ModelAttribute EventRequestDto requestDto) {
+    public ResponseEntity<EventResponseDto> createEvent(@Valid @ModelAttribute EventRequestDto requestDto) {
         EventResponseDto responseDto = eventService.createEvent(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
