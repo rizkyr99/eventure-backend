@@ -11,5 +11,6 @@ public interface EventService {
     Page<EventSummaryDto> getAllEvents(String categorySlug, String location, boolean isFree, String search, int page, int size);
     EventDetailsDto getEventDetails(Long id);
     EventSummaryDto createEvent(EventRequestDto eventRequestDto, Long organizerId);
+    EventSummaryDto updateEvent(Long eventId, EventRequestDto eventRequestDto, String email) throws AccessDeniedException;
     void deleteEvent(Long eventId, String currentUserEmail) throws AccessDeniedException;
 }

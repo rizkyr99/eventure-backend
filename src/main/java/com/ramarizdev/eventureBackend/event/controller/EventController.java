@@ -51,6 +51,16 @@ public class EventController {
         return Response.success(HttpStatus.CREATED.value(), "Event created successfully", responseDto);
     }
 
+    @PutMapping(value = "/{eventId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Response<EventSummaryDto>> updateEvent(@Valid @PathVariable Long eventId, @ModelAttribute EventRequestDto requestDto) throws AccessDeniedException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+
+        EventSummaryDto responseDto = eventService.updateEvent(eventId,requestDto,email);
+
+        return Response.success("Event successfully updated", responseDto);
+    }
+
     @DeleteMapping("/{eventId}")
     public ResponseEntity<?> deleteEvent(@PathVariable Long eventId) throws AccessDeniedException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

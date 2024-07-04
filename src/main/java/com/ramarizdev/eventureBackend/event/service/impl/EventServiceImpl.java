@@ -120,13 +120,63 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public EventSummaryDto updateEvent(Long eventId, EventRequestDto requestDto, String email) throws AccessDeniedException {
+        Event existEvent = eventRepository.findById(eventId).orElseThrow(() -> new EntityNotFoundException("Event not found with id: " + eventId));
+
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        if(!user.getOrganizer().getId().equals(existEvent.getOrganizer().getId())) {
+            throw new AccessDeniedException("You are not authorized to edit this event.");
+        }
+
+        // Update the event details based on the request DTO
+        existEvent.setName(requestDto.getName());
+        existEvent.setDescription(requestDto.getDescription());
+        existEvent.setStartDate(requestDto.getStartDate());
+        existEvent.setEndDate(requestDto.getEndDate());
+        existEvent.setLocation(requestDto.getLocation());
+
+        Category category = categoryRepository.findById(requestDto.getCategory())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid category ID"));
+        existEvent.setCategory(category);
+
+        if (requestDto.getImage() != null) {
+            String imageUrl = uploadFile(requestDto.getImage(), "events");
+            existEvent.setImage(imageUrl);
+        }
+
+        List<TicketType> updatedTicketTypes = requestDto.getTicketTypes().stream().map(ticketType -> {
+            // Check if ticket type exists and update or create new ones
+            TicketType existingTicketType = existEvent.getTicketTypes().stream()
+                    .filter(tt -> tt.getId().equals(ticketType.getId()))
+                    .findFirst()
+                    .orElse(new TicketType());
+
+            existingTicketType.setName(ticketType.getName());
+            existingTicketType.setPrice(ticketType.getPrice());
+            existingTicketType.setQuantity(ticketType.getQuantity());
+            existingTicketType.setEvent(existEvent);
+
+            return existingTicketType;
+        }).collect(Collectors.toList());
+
+        existEvent.setTicketTypes(updatedTicketTypes);
+
+        Event updatedEvent = eventRepository.save(existEvent);
+
+
+        return updatedEvent.toSummaryDto();
+
+    }
+
+    @Override
     public void deleteEvent(Long eventId, String email) throws AccessDeniedException {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("User not found"));
 
         Event event = eventRepository.findById(eventId).orElseThrow(() -> new EntityNotFoundException("Event not found with id: " + eventId));
 
         if(!user.getOrganizer().getId().equals(event.getOrganizer().getId())) {
-            throw new AccessDeniedException("");
+            throw new AccessDeniedException("You are not authorized to delete this event.");
         }
 
         eventRepository.delete(event);

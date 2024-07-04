@@ -52,7 +52,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Response<String>> handleAccessDeniedException(AccessDeniedException ex) {
-        return Response.failed(HttpStatus.FORBIDDEN.value(), "You are not authorized to delete this event.");
+        return Response.failed(HttpStatus.FORBIDDEN.value(), ex.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
