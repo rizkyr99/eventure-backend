@@ -56,7 +56,7 @@ public class EventController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
 
-        EventSummaryDto responseDto = eventService.updateEvent(eventId,requestDto,email);
+        EventSummaryDto responseDto = eventService.updateEvent(eventId, requestDto, email);
 
         return Response.success("Event successfully updated", responseDto);
     }

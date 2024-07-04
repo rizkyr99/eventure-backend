@@ -65,8 +65,6 @@ public class AuthController {
         data.put("message","User logged in successfully");
         data.put("data",response);
 
-
-
         Cookie cookie = new Cookie("sid", token);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Set-Cookie", cookie.getName() + "=" + cookie.getValue() + "; Path=/; HttpOnly");

@@ -1,12 +1,14 @@
 package com.ramarizdev.eventureBackend.user.service.impl;
 
 import com.ramarizdev.eventureBackend.user.dto.RegisterRequestDto;
+import com.ramarizdev.eventureBackend.user.dto.UserDetailsDto;
 import com.ramarizdev.eventureBackend.user.entity.*;
 import com.ramarizdev.eventureBackend.user.repository.AttendeeRepository;
 import com.ramarizdev.eventureBackend.user.repository.OrganizerRepository;
 import com.ramarizdev.eventureBackend.user.repository.ReferralCodeRepository;
 import com.ramarizdev.eventureBackend.user.repository.UserRepository;
 import com.ramarizdev.eventureBackend.user.service.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -46,14 +48,12 @@ public class UserServiceImpl implements UserService {
             Attendee attendee = new Attendee();
             attendee.setName(requestDto.getName());
             attendee.setUser(user);
-            attendee.setTotalPoints(0);
 
             if(requestDto.getReferralCode() != null) {
                 Optional<ReferralCode> referralCode = referralCodeRepository.findByCode(requestDto.getReferralCode());
                 if(referralCode.isPresent() && referralCode.get().getAttendee() != null) {
                     Attendee referrerAttendee = referralCode.get().getAttendee();
 
-                    referrerAttendee.setTotalPoints(referrerAttendee.getTotalPoints() + 10000);
 //
                     Point point = new Point();
                     point.setAmount(10000);
@@ -83,5 +83,14 @@ public class UserServiceImpl implements UserService {
         }
 
         return userRepository.save(user);
+    }
+
+    @Override
+    public UserDetailsDto getUserProfile(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        UserDetailsDto userDetailsDto = user.toDto();
+
+        return userDetailsDto;
     }
 }

@@ -1,5 +1,6 @@
 package com.ramarizdev.eventureBackend.user.entity;
 
+import com.ramarizdev.eventureBackend.user.dto.AttendeeDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -55,10 +56,22 @@ public class Attendee {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-    @NotNull
-    @Column(name = "total_points", nullable = false)
-    private Integer totalPoints = 0;
-
     @OneToMany(mappedBy = "attendee", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Point> points = new ArrayList<>();
+
+    public AttendeeDto toDto() {
+        AttendeeDto attendeeDto = new AttendeeDto();
+        attendeeDto.setId(id);
+        attendeeDto.setReferralCode(referralCode.getCode());
+        attendeeDto.setName(name);
+        attendeeDto.setPhone(phone);
+        attendeeDto.setImage(image);
+
+        int totalPoints = points.stream().mapToInt(Point::getAmount).sum();
+
+        attendeeDto.setTotalPoints(totalPoints);
+
+
+        return attendeeDto;
+    }
 }

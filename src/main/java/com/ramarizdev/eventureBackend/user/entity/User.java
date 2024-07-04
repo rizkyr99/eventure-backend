@@ -1,6 +1,9 @@
 package com.ramarizdev.eventureBackend.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ramarizdev.eventureBackend.user.dto.AttendeeDto;
+import com.ramarizdev.eventureBackend.user.dto.OrganizerDto;
+import com.ramarizdev.eventureBackend.user.dto.UserDetailsDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -40,5 +43,23 @@ public class User {
     @JsonIgnore
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Organizer organizer;
+
+    public UserDetailsDto toDto() {
+        UserDetailsDto userDetailsDto = new UserDetailsDto();
+        userDetailsDto.setId(id);
+        userDetailsDto.setEmail(email);
+        userDetailsDto.setRole(role);
+
+        if(role.equals(UserRole.ATTENDEE)) {
+            AttendeeDto attendeeDto = attendee.toDto();
+            userDetailsDto.setAttendee(attendeeDto);
+        } else if(role.equals(UserRole.ORGANIZER)) {
+            OrganizerDto organizerDto = organizer.toDto();
+            userDetailsDto.setOrganizer(organizerDto);
+        }
+
+
+        return userDetailsDto;
+    }
 }
 

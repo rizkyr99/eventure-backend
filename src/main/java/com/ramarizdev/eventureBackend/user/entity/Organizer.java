@@ -1,6 +1,7 @@
 package com.ramarizdev.eventureBackend.user.entity;
 
 import com.ramarizdev.eventureBackend.event.entity.Event;
+import com.ramarizdev.eventureBackend.user.dto.OrganizerDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -39,4 +40,13 @@ public class Organizer {
 
     @OneToMany(mappedBy = "organizer")
     private List<Event> events = new ArrayList<>();
+
+    public OrganizerDto toDto() {
+        OrganizerDto organizerDto = new OrganizerDto();
+        organizerDto.setId(id);
+        organizerDto.setName(name);
+        organizerDto.setAddress(address);
+        organizerDto.setImage(image);
+        return organizerDto;
+    }
 }
