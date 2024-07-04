@@ -4,6 +4,7 @@ import com.ramarizdev.eventureBackend.auth.dto.LoginRequestDto;
 import com.ramarizdev.eventureBackend.auth.dto.LoginResponseDto;
 import com.ramarizdev.eventureBackend.auth.entity.UserAuth;
 import com.ramarizdev.eventureBackend.auth.service.AuthService;
+import com.ramarizdev.eventureBackend.response.Response;
 import jakarta.servlet.http.Cookie;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpHeaders;
@@ -50,12 +51,16 @@ public class AuthController {
         String token = authService.generateToken(authentication);
 
         LoginResponseDto response = new LoginResponseDto();
-        response.setMessage("User logged in successfully");
+
+        response.setId(userDetails.getId().toString());
+        response.setEmail(userDetails.getEmail());
+        response.setName(userDetails.getName());
+        response.setRole(userDetails.getRole().toString());
         response.setToken(token);
 
         Cookie cookie = new Cookie("sid", token);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Set-Cookie", cookie.getName() + "=" + cookie.getValue() + "; Path=/; HttpOnly");
-        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(response);
+        return Response.success("User logged in successfully", response);
     }
 }
