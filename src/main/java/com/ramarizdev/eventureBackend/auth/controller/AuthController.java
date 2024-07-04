@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/v1/auth")
 @Validated
@@ -58,9 +61,15 @@ public class AuthController {
         response.setRole(userDetails.getRole().toString());
         response.setToken(token);
 
+        Map<String, Object> data = new HashMap<>();
+        data.put("message","User logged in successfully");
+        data.put("data",response);
+
+
+
         Cookie cookie = new Cookie("sid", token);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Set-Cookie", cookie.getName() + "=" + cookie.getValue() + "; Path=/; HttpOnly");
-        return Response.success("User logged in successfully", response);
+        return ResponseEntity.ok().headers(headers).body(data);
     }
 }
