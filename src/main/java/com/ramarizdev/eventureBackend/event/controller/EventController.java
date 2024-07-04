@@ -7,8 +7,6 @@ import com.ramarizdev.eventureBackend.event.dto.EventSummaryDto;
 import com.ramarizdev.eventureBackend.event.service.impl.EventServiceImpl;
 import com.ramarizdev.eventureBackend.response.Response;
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,11 +16,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
+
 @RestController
 @RequestMapping("/api/v1/events")
 @Validated
 public class EventController {
-    private static final Logger log = LoggerFactory.getLogger(EventController.class);
     private final EventServiceImpl eventService;
     private final UserDetailsServiceImpl userDetailsService;
 
@@ -53,10 +52,9 @@ public class EventController {
     }
 
     @DeleteMapping("/{eventId}")
-    public ResponseEntity<?> deleteEvent(@PathVariable Long eventId) {
+    public ResponseEntity<?> deleteEvent(@PathVariable Long eventId) throws AccessDeniedException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-//        User user = userRepository
 
         eventService.deleteEvent(eventId, email);
         return Response.success("Event deleted successfully");

@@ -11,6 +11,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.nio.file.AccessDeniedException;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
@@ -46,6 +48,11 @@ public class GlobalExceptionHandler {
         String message = exception.getMessage();
 
         return Response.failed(HttpStatus.NOT_FOUND.value(), message);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Response<String>> handleAccessDeniedException(AccessDeniedException ex) {
+        return Response.failed(HttpStatus.FORBIDDEN.value(), "You are not authorized to delete this event.");
     }
 
     @ExceptionHandler(Exception.class)

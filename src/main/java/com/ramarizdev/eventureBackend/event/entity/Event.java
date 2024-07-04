@@ -91,9 +91,7 @@ public class Event {
         responseDto.setStartTime(startTime);
         responseDto.setEndTime(endTime);
         responseDto.setLocation(location);
-        responseDto.setDescription(description);
         responseDto.setCategory(category.getName());
-        responseDto.setOrganizer(organizer.getName());
         return responseDto;
     }
 

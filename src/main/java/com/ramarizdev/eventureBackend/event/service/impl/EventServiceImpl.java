@@ -12,8 +12,12 @@ import com.ramarizdev.eventureBackend.event.repository.EventRepository;
 import com.ramarizdev.eventureBackend.event.service.EventService;
 import com.ramarizdev.eventureBackend.event.specification.EventSpecification;
 import com.ramarizdev.eventureBackend.user.entity.Organizer;
+import com.ramarizdev.eventureBackend.user.entity.User;
 import com.ramarizdev.eventureBackend.user.repository.OrganizerRepository;
+import com.ramarizdev.eventureBackend.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,15 +35,18 @@ import java.util.stream.Collectors;
 
 @Service
 public class EventServiceImpl implements EventService {
+    private static final Logger log = LoggerFactory.getLogger(EventServiceImpl.class);
     private final EventRepository eventRepository;
     private final CategoryRepository categoryRepository;
     private final OrganizerRepository organizerRepository;
+    private final UserRepository userRepository;
     private final Cloudinary cloudinary;
 
-    public EventServiceImpl(EventRepository eventRepository, CategoryRepository categoryRepository, OrganizerRepository organizerRepository, Cloudinary cloudinary) {
+    public EventServiceImpl(EventRepository eventRepository, CategoryRepository categoryRepository, OrganizerRepository organizerRepository, UserRepository userRepository, Cloudinary cloudinary) {
         this.eventRepository = eventRepository;
         this.categoryRepository = categoryRepository;
         this.organizerRepository = organizerRepository;
+        this.userRepository = userRepository;
         this.cloudinary = cloudinary;
     }
 
@@ -112,8 +120,16 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void deleteEvent(Long eventId, String currentUserEmail) {
+    public void deleteEvent(Long eventId, String email) throws AccessDeniedException {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("User not found"));
+
         Event event = eventRepository.findById(eventId).orElseThrow(() -> new EntityNotFoundException("Event not found with id: " + eventId));
+
+        if(!user.getOrganizer().getId().equals(event.getOrganizer().getId())) {
+            throw new AccessDeniedException("");
+        }
+
+        eventRepository.delete(event);
 
     }
 
