@@ -6,8 +6,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Data
-public class EventResponseDto {
+public class EventDetailsDto {
     private Long id;
+
     private String name;
 
     private String image;

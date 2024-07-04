@@ -1,6 +1,7 @@
 package com.ramarizdev.eventureBackend.exception;
 
 import com.ramarizdev.eventureBackend.response.Response;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -38,6 +39,13 @@ public class GlobalExceptionHandler {
         String message = extractErrorMessage(exception);
 
         return Response.failed(HttpStatus.CONFLICT.value(), message);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<Response<Object>> handleEntityNotFoundException(EntityNotFoundException exception) {
+        String message = exception.getMessage();
+
+        return Response.failed(HttpStatus.NOT_FOUND.value(), message);
     }
 
     @ExceptionHandler(Exception.class)

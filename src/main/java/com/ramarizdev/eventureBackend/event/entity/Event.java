@@ -1,7 +1,8 @@
 package com.ramarizdev.eventureBackend.event.entity;
 
 import com.ramarizdev.eventureBackend.category.entity.Category;
-import com.ramarizdev.eventureBackend.event.dto.EventResponseDto;
+import com.ramarizdev.eventureBackend.event.dto.EventDetailsDto;
+import com.ramarizdev.eventureBackend.event.dto.EventSummaryDto;
 import com.ramarizdev.eventureBackend.user.entity.Organizer;
 import com.ramarizdev.eventureBackend.voucher.entity.Voucher;
 import jakarta.persistence.*;
@@ -79,8 +80,25 @@ public class Event {
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Voucher> vouchers;
 
-    public EventResponseDto toDto() {
-        EventResponseDto responseDto = new EventResponseDto();
+    public EventSummaryDto toSummaryDto() {
+        EventSummaryDto responseDto = new EventSummaryDto();
+
+        responseDto.setId(id);
+        responseDto.setName(name);
+        responseDto.setImage(image);
+        responseDto.setStartDate(startDate);
+        responseDto.setEndDate(endDate);
+        responseDto.setStartTime(startTime);
+        responseDto.setEndTime(endTime);
+        responseDto.setLocation(location);
+        responseDto.setDescription(description);
+        responseDto.setCategory(category.getName());
+        responseDto.setOrganizer(organizer.getName());
+        return responseDto;
+    }
+
+    public EventDetailsDto toDetailsDto() {
+        EventDetailsDto responseDto = new EventDetailsDto();
 
         responseDto.setId(id);
         responseDto.setName(name);

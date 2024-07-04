@@ -3,8 +3,9 @@ package com.ramarizdev.eventureBackend.event.service.impl;
 import com.cloudinary.Cloudinary;
 import com.ramarizdev.eventureBackend.category.entity.Category;
 import com.ramarizdev.eventureBackend.category.repository.CategoryRepository;
+import com.ramarizdev.eventureBackend.event.dto.EventDetailsDto;
 import com.ramarizdev.eventureBackend.event.dto.EventRequestDto;
-import com.ramarizdev.eventureBackend.event.dto.EventResponseDto;
+import com.ramarizdev.eventureBackend.event.dto.EventSummaryDto;
 import com.ramarizdev.eventureBackend.event.entity.Event;
 import com.ramarizdev.eventureBackend.event.entity.TicketType;
 import com.ramarizdev.eventureBackend.event.repository.EventRepository;
@@ -42,7 +43,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Page<EventResponseDto> getAllEvents(String categorySlug, String location, boolean isFree, String search, int page, int size) {
+    public Page<EventSummaryDto> getAllEvents(String categorySlug, String location, boolean isFree, String search, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
 
         Specification<Event> spec = Specification.where(null);
@@ -62,13 +63,20 @@ public class EventServiceImpl implements EventService {
 
         Page<Event> eventPage = eventRepository.findAll(spec,pageable);
 
-        List<EventResponseDto> eventResponseDtos = eventPage.getContent().stream().map(Event::toDto).collect(Collectors.toList());
+        List<EventSummaryDto> eventResponseDtos = eventPage.getContent().stream().map(Event::toSummaryDto).collect(Collectors.toList());
 
         return new PageImpl<>(eventResponseDtos, pageable, eventPage.getTotalElements());
     }
 
     @Override
-    public EventResponseDto createEvent(EventRequestDto requestDto, Long organizerId) {
+    public EventDetailsDto getEventDetails(Long id) {
+        Event event = eventRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Event not found"));
+
+        return event.toDetailsDto();
+    }
+
+    @Override
+    public EventSummaryDto createEvent(EventRequestDto requestDto, Long organizerId) {
         Event event = requestDto.toEntity();
 
         Category category = categoryRepository.findById(requestDto.getCategory()).orElseThrow(
@@ -98,7 +106,7 @@ public class EventServiceImpl implements EventService {
 
         Event newEvent = eventRepository.save(event);
 
-        EventResponseDto responseDto = newEvent.toDto();
+        EventSummaryDto responseDto = newEvent.toSummaryDto();
 
         return responseDto;
     }
