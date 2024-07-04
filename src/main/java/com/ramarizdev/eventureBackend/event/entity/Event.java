@@ -3,6 +3,7 @@ package com.ramarizdev.eventureBackend.event.entity;
 import com.ramarizdev.eventureBackend.category.entity.Category;
 import com.ramarizdev.eventureBackend.event.dto.EventResponseDto;
 import com.ramarizdev.eventureBackend.user.entity.Organizer;
+import com.ramarizdev.eventureBackend.voucher.entity.Voucher;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -74,6 +75,9 @@ public class Event {
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<TicketType> ticketTypes;
+
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private List<Voucher> vouchers;
 
     public EventResponseDto toDto() {
         EventResponseDto responseDto = new EventResponseDto();
