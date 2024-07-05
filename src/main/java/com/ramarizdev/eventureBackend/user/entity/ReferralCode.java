@@ -7,6 +7,9 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @Getter
@@ -26,4 +29,8 @@ public class ReferralCode {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "attendee_id", unique = true)
     private Attendee attendee;
+
+    @OneToMany(mappedBy = "referralCode")
+    private List<ReferralUsage> referralUsages = new ArrayList<>();
+
 }

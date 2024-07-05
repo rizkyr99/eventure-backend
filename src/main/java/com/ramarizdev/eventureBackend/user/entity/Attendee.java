@@ -59,6 +59,9 @@ public class Attendee {
     @OneToMany(mappedBy = "attendee", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Point> points = new ArrayList<>();
 
+    @OneToOne(mappedBy = "referredAttendee", cascade = CascadeType.ALL)
+    private ReferralUsage referralUsage;
+
     public AttendeeDto toDto() {
         AttendeeDto attendeeDto = new AttendeeDto();
         attendeeDto.setId(id);

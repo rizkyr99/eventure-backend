@@ -52,9 +52,14 @@ public class UserServiceImpl implements UserService {
             if(requestDto.getReferralCode() != null) {
                 Optional<ReferralCode> referralCode = referralCodeRepository.findByCode(requestDto.getReferralCode());
                 if(referralCode.isPresent() && referralCode.get().getAttendee() != null) {
+                    ReferralUsage referralUsage = new ReferralUsage();
+                    referralUsage.setReferralCode(referralCode.get());
+                    referralUsage.setReferredAttendee(attendee);
+
+                    attendee.setReferralUsage(referralUsage);
+
                     Attendee referrerAttendee = referralCode.get().getAttendee();
 
-//
                     Point point = new Point();
                     point.setAmount(10000);
                     point.setAttendee(referrerAttendee);
