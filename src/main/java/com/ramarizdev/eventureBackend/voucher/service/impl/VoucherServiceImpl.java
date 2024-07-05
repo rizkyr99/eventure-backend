@@ -10,6 +10,8 @@ import com.ramarizdev.eventureBackend.voucher.service.VoucherService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class VoucherServiceImpl implements VoucherService {
     private final VoucherRepository voucherRepository;
@@ -33,5 +35,13 @@ public class VoucherServiceImpl implements VoucherService {
         voucher.setEvent(event);
 
         return voucherRepository.save(voucher);
+    }
+
+    @Override
+    public List<Voucher> getAllVouchers(Long eventId) {
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new EntityNotFoundException("Event not found"));
+
+        List<Voucher> vouchers = voucherRepository.findByEvent(event);
+        return vouchers;
     }
 }
