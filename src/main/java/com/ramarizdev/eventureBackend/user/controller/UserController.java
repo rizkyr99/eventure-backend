@@ -27,7 +27,6 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<Response<User>> register(@Valid @RequestBody RegisterRequestDto requestDto) {
         User user = userService.register(requestDto);
-//        return ResponseEntity.ok().body(user);
         return Response.success("User registered successfully", user);
     }
 
