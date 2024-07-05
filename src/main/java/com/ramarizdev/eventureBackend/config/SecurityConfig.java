@@ -70,8 +70,8 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/v1/auth/**").permitAll();
-                    auth.requestMatchers(HttpMethod.GET,"/api/v1/events").permitAll();
-                    auth.requestMatchers(HttpMethod.POST,"/api/v1/events").hasRole("ORGANIZER");
+                    auth.requestMatchers(HttpMethod.GET,"/api/v1/events/**").permitAll();
+                    auth.requestMatchers(HttpMethod.POST,"/api/v1/events/**").hasRole("ORGANIZER");
                     auth.requestMatchers("/api/v1/users/register").permitAll();
                     auth.anyRequest().authenticated();
                 })
