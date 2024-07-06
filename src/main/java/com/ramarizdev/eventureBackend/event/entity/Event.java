@@ -3,6 +3,7 @@ package com.ramarizdev.eventureBackend.event.entity;
 import com.ramarizdev.eventureBackend.category.entity.Category;
 import com.ramarizdev.eventureBackend.event.dto.EventDetailsDto;
 import com.ramarizdev.eventureBackend.event.dto.EventSummaryDto;
+import com.ramarizdev.eventureBackend.order.entity.Order;
 import com.ramarizdev.eventureBackend.user.entity.Organizer;
 import com.ramarizdev.eventureBackend.voucher.entity.Voucher;
 import jakarta.persistence.*;
@@ -14,6 +15,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -75,10 +77,13 @@ public class Event {
     private Category category;
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    private List<TicketType> ticketTypes;
+    private List<TicketType> ticketTypes = new ArrayList<>();
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    private List<Voucher> vouchers;
+    private List<Voucher> vouchers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private List<Order> orders = new ArrayList<>();
 
     public EventSummaryDto toSummaryDto() {
         EventSummaryDto responseDto = new EventSummaryDto();
