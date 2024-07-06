@@ -23,6 +23,10 @@ public class EventSummaryDto {
 
     private String location;
 
+    private Boolean isFree;
+
     private String category;
+
+    private Integer lowestPrice;
 
 }

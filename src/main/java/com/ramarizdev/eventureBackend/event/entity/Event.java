@@ -91,7 +91,9 @@ public class Event {
         responseDto.setStartTime(startTime);
         responseDto.setEndTime(endTime);
         responseDto.setLocation(location);
+        responseDto.setIsFree(isFree);
         responseDto.setCategory(category.getName());
+
         return responseDto;
     }
 

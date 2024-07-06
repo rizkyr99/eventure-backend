@@ -68,7 +68,6 @@ public class EventServiceImpl implements EventService {
             spec = spec.and(EventSpecification.containsKeyword(search));
         }
 
-
         Page<Event> eventPage = eventRepository.findAll(spec,pageable);
 
         List<EventSummaryDto> eventResponseDtos = eventPage.getContent().stream().map(Event::toSummaryDto).collect(Collectors.toList());
