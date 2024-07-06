@@ -1,5 +1,6 @@
 package com.ramarizdev.eventureBackend.user.entity;
 
+import com.ramarizdev.eventureBackend.order.entity.Order;
 import com.ramarizdev.eventureBackend.user.dto.AttendeeDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -61,6 +62,9 @@ public class Attendee {
 
     @OneToOne(mappedBy = "referredAttendee", cascade = CascadeType.ALL)
     private ReferralUsage referralUsage;
+
+    @OneToMany(mappedBy = "attendee", cascade = CascadeType.ALL)
+    private List<Order> orders = new ArrayList<>();
 
     public AttendeeDto toDto() {
         AttendeeDto attendeeDto = new AttendeeDto();
