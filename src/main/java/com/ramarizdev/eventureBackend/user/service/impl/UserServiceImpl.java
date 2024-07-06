@@ -29,13 +29,15 @@ public class UserServiceImpl implements UserService {
     private final OrganizerRepository organizerRepository;
     private final ReferralCodeRepository referralCodeRepository;
     private final PasswordEncoder passwordEncoder;
+    private final PointServiceImpl pointService;
 
-    public UserServiceImpl(UserRepository userRepository, AttendeeRepository attendeeRepository, OrganizerRepository organizerRepository, ReferralCodeRepository referralCodeRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, AttendeeRepository attendeeRepository, OrganizerRepository organizerRepository, ReferralCodeRepository referralCodeRepository, PasswordEncoder passwordEncoder, PointServiceImpl pointService) {
         this.userRepository = userRepository;
         this.attendeeRepository = attendeeRepository;
         this.organizerRepository = organizerRepository;
         this.referralCodeRepository = referralCodeRepository;
         this.passwordEncoder = passwordEncoder;
+        this.pointService = pointService;
     }
 
     @Transactional
@@ -60,11 +62,7 @@ public class UserServiceImpl implements UserService {
 
                     Attendee referrerAttendee = referralCode.get().getAttendee();
 
-                    Point point = new Point();
-                    point.setAmount(10000);
-                    point.setAttendee(referrerAttendee);
-                    point.setCreatedAt(Instant.now());
-                    point.setExpiredAt(Instant.now().atZone(ZoneOffset.UTC).plusMonths(3).toInstant());
+                    Point point = pointService.createPoint(referrerAttendee, 10000);
 
                     referrerAttendee.getPoints().add(point);
 
