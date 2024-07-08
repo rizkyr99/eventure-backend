@@ -1,7 +1,6 @@
 package com.ramarizdev.eventureBackend.order.controller;
 
 import com.ramarizdev.eventureBackend.order.dto.OrderDto;
-import com.ramarizdev.eventureBackend.order.entity.Order;
 import com.ramarizdev.eventureBackend.order.service.impl.OrderServiceImpl;
 import com.ramarizdev.eventureBackend.response.Response;
 import jakarta.validation.Valid;

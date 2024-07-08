@@ -72,6 +72,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/v1/auth/**").permitAll();
                     auth.requestMatchers(HttpMethod.GET,"/api/v1/events/**").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll();
                     auth.requestMatchers(HttpMethod.POST,"/api/v1/events/**").hasRole(UserRole.ORGANIZER.name());
                     auth.requestMatchers("/api/v1/users/register").permitAll();
                     auth.requestMatchers("/api/v1/orders").hasRole(UserRole.ATTENDEE.name());
