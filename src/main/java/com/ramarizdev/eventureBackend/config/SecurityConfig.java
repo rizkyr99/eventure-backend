@@ -7,6 +7,7 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.ramarizdev.eventureBackend.auth.service.impl.UserDetailsServiceImpl;
+import com.ramarizdev.eventureBackend.user.entity.UserRole;
 import jakarta.servlet.http.Cookie;
 import lombok.extern.java.Log;
 import org.springframework.context.annotation.Bean;
@@ -71,8 +72,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/v1/auth/**").permitAll();
                     auth.requestMatchers(HttpMethod.GET,"/api/v1/events/**").permitAll();
-                    auth.requestMatchers(HttpMethod.POST,"/api/v1/events/**").hasRole("ORGANIZER");
+                    auth.requestMatchers(HttpMethod.POST,"/api/v1/events/**").hasRole(UserRole.ORGANIZER.name());
                     auth.requestMatchers("/api/v1/users/register").permitAll();
+                    auth.requestMatchers("/api/v1/orders").hasRole(UserRole.ATTENDEE.name());
                     auth.anyRequest().authenticated();
                 })
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
