@@ -12,6 +12,7 @@ import com.ramarizdev.eventureBackend.order.service.OrderService;
 import com.ramarizdev.eventureBackend.user.entity.Attendee;
 import com.ramarizdev.eventureBackend.user.service.impl.AttendeeServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +32,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDto createOrder(OrderDto orderDto) {
         Order order = new Order();
 
@@ -45,6 +47,8 @@ public class OrderServiceImpl implements OrderService {
                     OrderItem orderItem1 = new OrderItem();
 
                     TicketType ticketType = ticketTypeService.getTicketTypeById(orderItemDto.getTicketTypeId());
+
+                    ticketTypeService.reduceQuantity(ticketType);
                     orderItem1.setTicketType(ticketType);
 
                     orderItem1.setPrice(orderItemDto.getPrice());

@@ -18,4 +18,12 @@ public class TicketTypeServiceImpl implements TicketTypeService {
     public TicketType getTicketTypeById(Long id) {
         return ticketTypeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Ticket type not found"));
     }
+
+    @Override
+    public TicketType reduceQuantity(TicketType ticketType) {
+        if(ticketType.getQuantity() > 0) {
+            ticketType.setQuantity(ticketType.getQuantity() - 1);
+        }
+        return ticketTypeRepository.save(ticketType);
+    }
 }
