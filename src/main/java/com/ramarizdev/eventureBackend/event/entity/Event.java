@@ -90,6 +90,9 @@ public class Event {
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
 
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private List<Review> reviews = new ArrayList<>();
+
     public EventSummaryDto toSummaryDto() {
         EventSummaryDto responseDto = new EventSummaryDto();
 

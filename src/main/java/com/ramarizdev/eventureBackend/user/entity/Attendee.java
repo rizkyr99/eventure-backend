@@ -1,5 +1,6 @@
 package com.ramarizdev.eventureBackend.user.entity;
 
+import com.ramarizdev.eventureBackend.event.entity.Review;
 import com.ramarizdev.eventureBackend.order.entity.Order;
 import com.ramarizdev.eventureBackend.user.dto.AttendeeDto;
 import jakarta.persistence.*;
@@ -65,6 +66,9 @@ public class Attendee {
 
     @OneToMany(mappedBy = "attendee", cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
+
+    @OneToMany(mappedBy = "attendee", cascade = CascadeType.ALL)
+    private List<Review> reviews = new ArrayList<>();
 
     public AttendeeDto toDto() {
         AttendeeDto attendeeDto = new AttendeeDto();
