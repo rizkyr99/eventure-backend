@@ -2,6 +2,7 @@ package com.ramarizdev.eventureBackend.order.entity;
 
 import com.ramarizdev.eventureBackend.event.entity.Event;
 import com.ramarizdev.eventureBackend.order.dto.OrderDto;
+import com.ramarizdev.eventureBackend.order.dto.OrderItemDto;
 import com.ramarizdev.eventureBackend.user.entity.Attendee;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -10,9 +11,12 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -39,18 +43,30 @@ public class Order {
 
     @NotNull
     @Column(name = "order_date", nullable = false)
-    private LocalDateTime orderDate;
+    private Instant orderDate;
 
     @NotNull
     @Column(name = "total_price", nullable = false)
-    private Double totalPrice;
+    private BigDecimal totalPrice;
 
     public OrderDto toDto() {
         OrderDto orderDto = new OrderDto();
 
-//        orderDto.setOrderItems(orderItems);
+        List<OrderItemDto> orderItemDtos = orderItems.stream().map(
+                OrderItem::toDto
+        ).collect(Collectors.toList());
+
+        orderDto.setId(id);
+        orderDto.setEventId(event.getId());
+        orderDto.setTotalPrice(totalPrice);
+        orderDto.setOrderItems(orderItemDtos);
         orderDto.setAttendeeId(attendee.getId());
 
         return orderDto;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        orderDate = Instant.now();
     }
 }

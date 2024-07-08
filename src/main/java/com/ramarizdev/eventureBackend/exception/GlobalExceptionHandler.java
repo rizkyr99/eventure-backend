@@ -55,10 +55,7 @@ public class GlobalExceptionHandler {
         return Response.failed(HttpStatus.FORBIDDEN.value(), ex.getMessage());
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Response<String>> handleGeneralException(Exception exception) {
-        return Response.failed(HttpStatus.INTERNAL_SERVER_ERROR.value(),"Unexpected error occurred");
-    }
+//
 
     private String extractErrorMessage(DataIntegrityViolationException ex) {
         if (ex.getMessage().contains("unique constraint")) {

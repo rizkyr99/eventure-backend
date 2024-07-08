@@ -7,6 +7,7 @@ import com.ramarizdev.eventureBackend.event.service.impl.EventServiceImpl;
 import com.ramarizdev.eventureBackend.order.dto.OrderDto;
 import com.ramarizdev.eventureBackend.order.entity.Order;
 import com.ramarizdev.eventureBackend.order.entity.OrderItem;
+import com.ramarizdev.eventureBackend.order.repository.OrderRepository;
 import com.ramarizdev.eventureBackend.order.service.OrderService;
 import com.ramarizdev.eventureBackend.user.entity.Attendee;
 import com.ramarizdev.eventureBackend.user.service.impl.AttendeeServiceImpl;
@@ -20,11 +21,13 @@ public class OrderServiceImpl implements OrderService {
     private final AttendeeServiceImpl attendeeService;
     private final EventServiceImpl eventService;
     private final TicketTypeService ticketTypeService;
+    private final OrderRepository orderRepository;
 
-    public OrderServiceImpl(AttendeeServiceImpl attendeeService, EventServiceImpl eventService, TicketTypeService ticketTypeService) {
+    public OrderServiceImpl(AttendeeServiceImpl attendeeService, EventServiceImpl eventService, TicketTypeService ticketTypeService, OrderRepository orderRepository) {
         this.attendeeService = attendeeService;
         this.eventService = eventService;
         this.ticketTypeService = ticketTypeService;
+        this.orderRepository = orderRepository;
     }
 
     @Override
@@ -54,8 +57,9 @@ public class OrderServiceImpl implements OrderService {
         ).collect(Collectors.toList());
 
         order.setOrderItems(orderItems);
-        order.setTotalPrice(order.getTotalPrice());
+        order.setTotalPrice(orderDto.getTotalPrice());
 
+        orderRepository.save(order);
 
         return order.toDto();
     }

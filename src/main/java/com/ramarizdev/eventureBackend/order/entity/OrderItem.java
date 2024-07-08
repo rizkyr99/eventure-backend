@@ -1,6 +1,7 @@
 package com.ramarizdev.eventureBackend.order.entity;
 
 import com.ramarizdev.eventureBackend.event.entity.TicketType;
+import com.ramarizdev.eventureBackend.order.dto.OrderItemDto;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -28,4 +29,15 @@ public class OrderItem {
 
     @Column(name = "price", nullable = false)
     private BigDecimal price;
+
+    public OrderItemDto toDto() {
+        OrderItemDto orderItemDto = new OrderItemDto();
+
+        orderItemDto.setId(id);
+        orderItemDto.setPrice(price);
+        orderItemDto.setQuantity(quantity);
+        orderItemDto.setTicketTypeId(ticketType.getId());
+
+        return orderItemDto;
+    }
 }
