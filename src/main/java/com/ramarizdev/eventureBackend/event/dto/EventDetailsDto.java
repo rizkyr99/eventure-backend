@@ -11,6 +11,8 @@ public class EventDetailsDto {
 
     private String name;
 
+    private String slug;
+
     private String image;
 
     private LocalDate startDate;

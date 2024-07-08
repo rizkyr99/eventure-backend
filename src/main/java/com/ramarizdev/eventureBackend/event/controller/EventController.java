@@ -46,6 +46,15 @@ public class EventController {
         return Response.success("Event details fetched", eventDetailsDto);
     }
 
+    @GetMapping("/{eventSlug}")
+    public ResponseEntity<Response<EventDetailsDto>> getEventBySlug(@PathVariable String eventSlug) {
+        Event event = eventService.getEventBySlug(eventSlug);
+
+        EventDetailsDto eventDetailsDto = event.toDetailsDto();
+
+        return Response.success("Event details fetched", eventDetailsDto);
+    }
+
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Response<EventSummaryDto>> createEvent(@Valid @ModelAttribute EventRequestDto requestDto) {
         Long organizerId = userDetailsService.getOrganizerIdFromAuthentication();

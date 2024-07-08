@@ -18,6 +18,10 @@ public class EventRequestDto {
     private String name;
 
     @NotNull
+    @NotBlank
+    private String slug;
+
+    @NotNull
     private MultipartFile image;
 
     @NotNull
@@ -46,6 +50,7 @@ public class EventRequestDto {
     public Event toEntity() {
         Event event = new Event();
         event.setName(name);
+        event.setSlug(slug);
         event.setStartDate(startDate);
         event.setEndDate(endDate);
         event.setStartTime(startTime);

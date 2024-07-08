@@ -32,12 +32,17 @@ public class Event {
 
     @NotNull
     @NotBlank
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     @NotNull
     @NotBlank
-    @Column(name = "image")
+    @Column(name = "slug", nullable = false, unique = true)
+    private String slug;
+
+    @NotNull
+    @NotBlank
+    @Column(name = "image", nullable = false)
     private String image;
 
     @NotNull
@@ -90,6 +95,7 @@ public class Event {
 
         responseDto.setId(id);
         responseDto.setName(name);
+        responseDto.setSlug(slug);
         responseDto.setImage(image);
         responseDto.setStartDate(startDate);
         responseDto.setEndDate(endDate);
@@ -107,6 +113,7 @@ public class Event {
 
         responseDto.setId(id);
         responseDto.setName(name);
+        responseDto.setSlug(slug);
         responseDto.setImage(image);
         responseDto.setStartDate(startDate);
         responseDto.setEndDate(endDate);

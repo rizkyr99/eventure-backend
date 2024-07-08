@@ -83,6 +83,13 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public Event getEventBySlug(String slug) {
+        Event event = eventRepository.findBySlug(slug).orElseThrow(() -> new EntityNotFoundException("Event not found"));
+
+        return event;
+    }
+
+    @Override
     public EventSummaryDto createEvent(EventRequestDto requestDto, Long organizerId) {
         Event event = requestDto.toEntity();
 

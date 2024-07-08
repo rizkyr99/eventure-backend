@@ -11,6 +11,7 @@ import java.nio.file.AccessDeniedException;
 public interface EventService {
     Page<EventSummaryDto> getAllEvents(String categorySlug, String location, boolean isFree, String search, int page, int size);
     Event getEventDetails(Long id);
+    Event getEventBySlug(String slug);
     EventSummaryDto createEvent(EventRequestDto eventRequestDto, Long organizerId);
     EventSummaryDto updateEvent(Long eventId, EventRequestDto eventRequestDto, String email) throws AccessDeniedException;
     void deleteEvent(Long eventId, String currentUserEmail) throws AccessDeniedException;

@@ -11,6 +11,8 @@ public class EventSummaryDto {
 
     private String name;
 
+    private String slug;
+
     private String image;
 
     private LocalDate startDate;
