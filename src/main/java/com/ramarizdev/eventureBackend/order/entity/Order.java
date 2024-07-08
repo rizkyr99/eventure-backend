@@ -1,6 +1,7 @@
 package com.ramarizdev.eventureBackend.order.entity;
 
 import com.ramarizdev.eventureBackend.event.entity.Event;
+import com.ramarizdev.eventureBackend.order.dto.OrderDto;
 import com.ramarizdev.eventureBackend.user.entity.Attendee;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -43,4 +44,13 @@ public class Order {
     @NotNull
     @Column(name = "total_price", nullable = false)
     private Double totalPrice;
+
+    public OrderDto toDto() {
+        OrderDto orderDto = new OrderDto();
+
+//        orderDto.setOrderItems(orderItems);
+        orderDto.setAttendeeId(attendee.getId());
+
+        return orderDto;
+    }
 }

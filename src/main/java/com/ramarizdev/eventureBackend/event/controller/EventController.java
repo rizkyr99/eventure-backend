@@ -4,6 +4,7 @@ import com.ramarizdev.eventureBackend.auth.service.impl.UserDetailsServiceImpl;
 import com.ramarizdev.eventureBackend.event.dto.EventDetailsDto;
 import com.ramarizdev.eventureBackend.event.dto.EventRequestDto;
 import com.ramarizdev.eventureBackend.event.dto.EventSummaryDto;
+import com.ramarizdev.eventureBackend.event.entity.Event;
 import com.ramarizdev.eventureBackend.event.service.impl.EventServiceImpl;
 import com.ramarizdev.eventureBackend.response.Response;
 import jakarta.validation.Valid;
@@ -38,9 +39,11 @@ public class EventController {
 
     @GetMapping("/{eventId}")
     public ResponseEntity<Response<EventDetailsDto>> getEventDetails(@PathVariable Long eventId) {
-        EventDetailsDto event = eventService.getEventDetails(eventId);
+        Event event = eventService.getEventDetails(eventId);
 
-        return Response.success("Event details fetched", event);
+        EventDetailsDto eventDetailsDto = event.toDetailsDto();
+
+        return Response.success("Event details fetched", eventDetailsDto);
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

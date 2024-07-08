@@ -76,10 +76,10 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventDetailsDto getEventDetails(Long id) {
+    public Event getEventDetails(Long id) {
         Event event = eventRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Event not found"));
 
-        return event.toDetailsDto();
+        return event;
     }
 
     @Override
