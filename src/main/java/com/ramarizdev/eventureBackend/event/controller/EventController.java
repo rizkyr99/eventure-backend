@@ -4,8 +4,10 @@ import com.ramarizdev.eventureBackend.auth.service.impl.UserDetailsServiceImpl;
 import com.ramarizdev.eventureBackend.event.dto.EventDetailsDto;
 import com.ramarizdev.eventureBackend.event.dto.EventRequestDto;
 import com.ramarizdev.eventureBackend.event.dto.EventSummaryDto;
+import com.ramarizdev.eventureBackend.event.dto.ReviewDto;
 import com.ramarizdev.eventureBackend.event.entity.Event;
 import com.ramarizdev.eventureBackend.event.service.impl.EventServiceImpl;
+import com.ramarizdev.eventureBackend.event.service.impl.ReviewServiceImpl;
 import com.ramarizdev.eventureBackend.response.Response;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -18,16 +20,19 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/events")
 @Validated
 public class EventController {
     private final EventServiceImpl eventService;
+    private final ReviewServiceImpl reviewService;
     private final UserDetailsServiceImpl userDetailsService;
 
-    public EventController(EventServiceImpl eventService, UserDetailsServiceImpl userDetailsService) {
+    public EventController(EventServiceImpl eventService, ReviewServiceImpl reviewService, UserDetailsServiceImpl userDetailsService) {
         this.eventService = eventService;
+        this.reviewService = reviewService;
         this.userDetailsService = userDetailsService;
     }
 
@@ -80,6 +85,12 @@ public class EventController {
 
         eventService.deleteEvent(eventId, email);
         return Response.success("Event deleted successfully");
+    }
+
+    @GetMapping("/{eventId}/reviews")
+    public ResponseEntity<Response<List<ReviewDto>>> getReviewsByEventId(@PathVariable Long eventId) {
+        List<ReviewDto> reviewDtos = eventService.getEventReviews(eventId);
+        return Response.success("Successfully fetched review for event with ID: " + eventId, reviewDtos);
     }
 
 

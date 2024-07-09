@@ -6,7 +6,9 @@ import com.ramarizdev.eventureBackend.category.repository.CategoryRepository;
 import com.ramarizdev.eventureBackend.event.dto.EventDetailsDto;
 import com.ramarizdev.eventureBackend.event.dto.EventRequestDto;
 import com.ramarizdev.eventureBackend.event.dto.EventSummaryDto;
+import com.ramarizdev.eventureBackend.event.dto.ReviewDto;
 import com.ramarizdev.eventureBackend.event.entity.Event;
+import com.ramarizdev.eventureBackend.event.entity.Review;
 import com.ramarizdev.eventureBackend.event.entity.TicketType;
 import com.ramarizdev.eventureBackend.event.repository.EventRepository;
 import com.ramarizdev.eventureBackend.event.service.EventService;
@@ -173,6 +175,15 @@ public class EventServiceImpl implements EventService {
 
         return updatedEvent.toSummaryDto();
 
+    }
+
+    @Override
+    public List<ReviewDto> getEventReviews(Long eventId) {
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new EntityNotFoundException("Event not found"));
+
+        List<ReviewDto> reviewDtos = event.getReviews().stream().map(Review::toDto).collect(Collectors.toList());
+
+        return reviewDtos;
     }
 
     @Override

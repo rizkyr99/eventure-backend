@@ -9,6 +9,8 @@ import com.ramarizdev.eventureBackend.user.entity.Attendee;
 import com.ramarizdev.eventureBackend.user.service.impl.AttendeeServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
@@ -17,6 +19,11 @@ public class ReviewServiceImpl implements ReviewService {
     public ReviewServiceImpl(ReviewRepository reviewRepository, AttendeeServiceImpl attendeeService, EventServiceImpl eventService) {
         this.reviewRepository = reviewRepository;
         this.eventService = eventService;
+    }
+
+    @Override
+    public List<ReviewDto> getReviewsByEventId(Long eventId) {
+        return List.of();
     }
 
     @Override
