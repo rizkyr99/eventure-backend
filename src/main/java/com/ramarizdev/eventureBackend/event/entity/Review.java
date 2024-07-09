@@ -41,6 +41,7 @@ public class Review {
     public ReviewDto toDto() {
         ReviewDto reviewDto = new ReviewDto();
 
+        reviewDto.setId(id);
         reviewDto.setAttendeeId(attendee.getId());
         reviewDto.setRating(rating);
         reviewDto.setContent(content);

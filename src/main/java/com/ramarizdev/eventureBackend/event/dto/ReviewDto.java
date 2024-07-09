@@ -6,6 +6,8 @@ import lombok.Data;
 
 @Data
 public class ReviewDto {
+    private Long id;
+
     @NotNull
     @NotBlank
     private String content;

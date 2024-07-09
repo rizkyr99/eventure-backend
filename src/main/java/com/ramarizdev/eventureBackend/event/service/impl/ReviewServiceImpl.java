@@ -33,7 +33,9 @@ public class ReviewServiceImpl implements ReviewService {
 
         review.setAttendee(attendee);
 
-        ReviewDto response = review.toDto();
+        Review newReview = reviewRepository.save(review);
+
+        ReviewDto response = newReview.toDto();
 
         return response;
     }
