@@ -2,7 +2,6 @@ package com.ramarizdev.eventureBackend.event.controller;
 
 import com.ramarizdev.eventureBackend.auth.service.impl.UserDetailsServiceImpl;
 import com.ramarizdev.eventureBackend.event.dto.ReviewDto;
-import com.ramarizdev.eventureBackend.event.entity.Review;
 import com.ramarizdev.eventureBackend.event.service.impl.ReviewServiceImpl;
 import com.ramarizdev.eventureBackend.response.Response;
 import com.ramarizdev.eventureBackend.user.entity.Attendee;

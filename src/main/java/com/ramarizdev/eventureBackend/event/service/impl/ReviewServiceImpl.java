@@ -12,12 +12,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
-    private final AttendeeServiceImpl attendeeService;
     private final EventServiceImpl eventService;
 
     public ReviewServiceImpl(ReviewRepository reviewRepository, AttendeeServiceImpl attendeeService, EventServiceImpl eventService) {
         this.reviewRepository = reviewRepository;
-        this.attendeeService = attendeeService;
         this.eventService = eventService;
     }
 
@@ -35,8 +33,6 @@ public class ReviewServiceImpl implements ReviewService {
 
         Review newReview = reviewRepository.save(review);
 
-        ReviewDto response = newReview.toDto();
-
-        return response;
+        return newReview.toDto();
     }
 }
