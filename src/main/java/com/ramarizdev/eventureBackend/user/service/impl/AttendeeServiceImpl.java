@@ -18,4 +18,9 @@ public class AttendeeServiceImpl implements AttendeeService {
     public Attendee getAttendeeById(Long attendeeId) {
         return attendeeRepository.findById(attendeeId).orElseThrow(() -> new EntityNotFoundException("Attendee not found"));
     }
+
+    @Override
+    public Attendee getAttendeeByEmail(String email) {
+        return attendeeRepository.findByUserEmail(email).orElseThrow(() -> new EntityNotFoundException("Attendee not found"));
+    }
 }

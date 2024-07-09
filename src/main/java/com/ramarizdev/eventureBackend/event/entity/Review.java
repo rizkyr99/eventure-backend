@@ -1,5 +1,6 @@
 package com.ramarizdev.eventureBackend.event.entity;
 
+import com.ramarizdev.eventureBackend.event.dto.ReviewDto;
 import com.ramarizdev.eventureBackend.user.entity.Attendee;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -35,5 +36,16 @@ public class Review {
     @PrePersist
     protected void onCreate() {
         createdAt = Instant.now();
+    }
+
+    public ReviewDto toDto() {
+        ReviewDto reviewDto = new ReviewDto();
+
+        reviewDto.setAttendeeId(attendee.getId());
+        reviewDto.setRating(rating);
+        reviewDto.setContent(content);
+        reviewDto.setEventId(event.getId());
+
+        return reviewDto;
     }
 }
