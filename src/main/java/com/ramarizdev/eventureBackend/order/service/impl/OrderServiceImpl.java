@@ -62,6 +62,10 @@ public class OrderServiceImpl implements OrderService {
                     OrderItem orderItem1 = new OrderItem();
 
                     TicketType ticketType = ticketTypeService.getTicketTypeById(orderItemDto.getTicketTypeId());
+                    if (ticketType.getQuantity() < orderItemDto.getQuantity()) {
+                        throw new IllegalArgumentException("Insufficient quantity for ticket type: " + ticketType.getName());
+                    }
+
                     ticketTypeService.reduceQuantity(ticketType, orderItemDto.getQuantity());
 
                     orderItem1.setTicketType(ticketType);
