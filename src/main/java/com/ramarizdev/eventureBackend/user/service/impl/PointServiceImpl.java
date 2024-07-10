@@ -6,6 +6,7 @@ import com.ramarizdev.eventureBackend.user.service.PointService;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneOffset;
 
 @Service
@@ -17,8 +18,8 @@ public class PointServiceImpl implements PointService {
 
         point.setAttendee(attendee);
         point.setAmount(amount);
-        point.setCreatedAt(Instant.now());
-        point.setExpiredAt(Instant.now().atZone(ZoneOffset.UTC).plusMonths(3).toInstant());
+        point.setCollectionDate(LocalDate.now());
+        point.setExpirationDate(LocalDate.now().plusMonths(3));
 
         return point;
     }

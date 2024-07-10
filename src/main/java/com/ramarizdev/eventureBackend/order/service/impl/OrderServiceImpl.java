@@ -10,10 +10,13 @@ import com.ramarizdev.eventureBackend.order.entity.OrderItem;
 import com.ramarizdev.eventureBackend.order.repository.OrderRepository;
 import com.ramarizdev.eventureBackend.order.service.OrderService;
 import com.ramarizdev.eventureBackend.user.entity.Attendee;
+import com.ramarizdev.eventureBackend.user.entity.Point;
 import com.ramarizdev.eventureBackend.user.service.impl.AttendeeServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,6 +45,13 @@ public class OrderServiceImpl implements OrderService {
         Attendee attendee = attendeeService.getAttendeeById(orderDto.getAttendeeId());
         order.setAttendee(attendee);
 
+        if(orderDto.isUsePoints()) {
+            BigDecimal availablePoints = new BigDecimal(calculateAvailablePoints(attendee.getPoints()));
+            BigDecimal usedPoints = availablePoints.min(orderDto.getTotalPrice());
+
+            orderDto.setTotalPrice(orderDto.getTotalPrice().subtract(usedPoints));
+        }
+
         List<OrderItem> orderItems = orderDto.getOrderItems().stream().map(
                 orderItemDto -> {
                     OrderItem orderItem1 = new OrderItem();
@@ -66,5 +76,11 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(order);
 
         return order.toDto();
+    }
+
+    private Integer calculateAvailablePoints(List<Point> points) {
+        return points.stream().filter(point -> point.getExpirationDate().isAfter(LocalDate.now()))
+                .mapToInt(Point::getAmount)
+                .sum();
     }
 }

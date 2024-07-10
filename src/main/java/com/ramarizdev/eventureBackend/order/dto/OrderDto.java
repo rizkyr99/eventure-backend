@@ -24,4 +24,6 @@ public class OrderDto {
     @NotNull
     private BigDecimal totalPrice;
 
+    @NotNull
+    private boolean usePoints;
 }

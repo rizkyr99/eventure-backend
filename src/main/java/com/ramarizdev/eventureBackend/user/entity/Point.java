@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -26,12 +27,12 @@ public class Point {
     private Integer amount;
 
     @CreationTimestamp
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private Instant createdAt;
+    @Column(name = "collection_date", nullable = false, updatable = false)
+    private LocalDate collectionDate;
 
     @NotNull
-    @Column(name = "expired_at", nullable = false)
-    private Instant expiredAt;
+    @Column(name = "expiration_date", nullable = false)
+    private LocalDate expirationDate;
 
     @ManyToOne
     @JoinColumn(name = "attendee_id", nullable = false)

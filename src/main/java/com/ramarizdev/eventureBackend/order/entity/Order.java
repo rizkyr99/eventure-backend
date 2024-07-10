@@ -4,6 +4,8 @@ import com.ramarizdev.eventureBackend.event.entity.Event;
 import com.ramarizdev.eventureBackend.order.dto.OrderDto;
 import com.ramarizdev.eventureBackend.order.dto.OrderItemDto;
 import com.ramarizdev.eventureBackend.user.entity.Attendee;
+import com.ramarizdev.eventureBackend.user.entity.Point;
+import com.ramarizdev.eventureBackend.voucher.entity.Voucher;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -13,6 +15,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +40,13 @@ public class Order {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "order_vouchers",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "voucher_id"))
+    private List<Voucher> vouchers = new ArrayList<>();
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
