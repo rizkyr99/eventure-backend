@@ -26,7 +26,7 @@ public class Point {
     @Column(name = "amount", nullable = false)
     private Integer amount;
 
-    @CreationTimestamp
+    @NotNull
     @Column(name = "collection_date", nullable = false, updatable = false)
     private LocalDate collectionDate;
 
@@ -34,7 +34,7 @@ public class Point {
     @Column(name = "expiration_date", nullable = false)
     private LocalDate expirationDate;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "attendee_id", nullable = false)
     private Attendee attendee;
 }
