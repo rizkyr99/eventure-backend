@@ -4,5 +4,5 @@ import com.ramarizdev.eventureBackend.event.entity.TicketType;
 
 public interface TicketTypeService {
     TicketType getTicketTypeById(Long id);
-    TicketType reduceQuantity(TicketType ticketType);
+    TicketType reduceQuantity(TicketType ticketType, Integer quantity);
 }

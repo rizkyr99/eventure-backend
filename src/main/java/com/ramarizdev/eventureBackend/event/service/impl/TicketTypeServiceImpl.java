@@ -20,9 +20,9 @@ public class TicketTypeServiceImpl implements TicketTypeService {
     }
 
     @Override
-    public TicketType reduceQuantity(TicketType ticketType) {
+    public TicketType reduceQuantity(TicketType ticketType, Integer quantity) {
         if(ticketType.getQuantity() > 0) {
-            ticketType.setQuantity(ticketType.getQuantity() - 1);
+            ticketType.setQuantity(ticketType.getQuantity() - quantity);
         }
         return ticketTypeRepository.save(ticketType);
     }

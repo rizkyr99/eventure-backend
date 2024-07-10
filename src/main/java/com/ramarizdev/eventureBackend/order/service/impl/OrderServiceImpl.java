@@ -62,8 +62,8 @@ public class OrderServiceImpl implements OrderService {
                     OrderItem orderItem1 = new OrderItem();
 
                     TicketType ticketType = ticketTypeService.getTicketTypeById(orderItemDto.getTicketTypeId());
+                    ticketTypeService.reduceQuantity(ticketType, orderItemDto.getQuantity());
 
-                    ticketTypeService.reduceQuantity(ticketType);
                     orderItem1.setTicketType(ticketType);
 
                     orderItem1.setPrice(orderItemDto.getPrice());
