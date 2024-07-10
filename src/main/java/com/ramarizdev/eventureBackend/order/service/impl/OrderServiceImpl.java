@@ -12,6 +12,7 @@ import com.ramarizdev.eventureBackend.order.service.OrderService;
 import com.ramarizdev.eventureBackend.user.entity.Attendee;
 import com.ramarizdev.eventureBackend.user.entity.Point;
 import com.ramarizdev.eventureBackend.user.service.impl.AttendeeServiceImpl;
+import com.ramarizdev.eventureBackend.user.service.impl.PointServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,12 +26,14 @@ public class OrderServiceImpl implements OrderService {
     private final AttendeeServiceImpl attendeeService;
     private final EventServiceImpl eventService;
     private final TicketTypeService ticketTypeService;
+    private final PointServiceImpl pointService;
     private final OrderRepository orderRepository;
 
-    public OrderServiceImpl(AttendeeServiceImpl attendeeService, EventServiceImpl eventService, TicketTypeService ticketTypeService, OrderRepository orderRepository) {
+    public OrderServiceImpl(AttendeeServiceImpl attendeeService, EventServiceImpl eventService, TicketTypeService ticketTypeService, PointServiceImpl pointService, OrderRepository orderRepository) {
         this.attendeeService = attendeeService;
         this.eventService = eventService;
         this.ticketTypeService = ticketTypeService;
+        this.pointService = pointService;
         this.orderRepository = orderRepository;
     }
 
@@ -45,9 +48,11 @@ public class OrderServiceImpl implements OrderService {
         Attendee attendee = attendeeService.getAttendeeById(orderDto.getAttendeeId());
         order.setAttendee(attendee);
 
+        BigDecimal usedPoints = BigDecimal.ZERO;
+
         if(orderDto.isUsePoints()) {
             BigDecimal availablePoints = new BigDecimal(calculateAvailablePoints(attendee.getPoints()));
-            BigDecimal usedPoints = availablePoints.min(orderDto.getTotalPrice());
+            usedPoints = availablePoints.min(orderDto.getTotalPrice());
 
             orderDto.setTotalPrice(orderDto.getTotalPrice().subtract(usedPoints));
         }
@@ -73,13 +78,18 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderItems(orderItems);
         order.setTotalPrice(orderDto.getTotalPrice());
 
+        if(orderDto.isUsePoints() && usedPoints.intValue() > 0) {
+            pointService.usePoint(attendee, usedPoints.intValue() * -1);
+        }
+
         orderRepository.save(order);
+
 
         return order.toDto();
     }
 
     private Integer calculateAvailablePoints(List<Point> points) {
-        return points.stream().filter(point -> point.getExpirationDate().isAfter(LocalDate.now()))
+        return points.stream().filter(point -> point.getExpirationDate() == null || point.getExpirationDate().isAfter(LocalDate.now()))
                 .mapToInt(Point::getAmount)
                 .sum();
     }

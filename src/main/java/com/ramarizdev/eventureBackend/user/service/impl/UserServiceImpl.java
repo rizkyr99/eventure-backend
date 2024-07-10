@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
 
                     Attendee referrerAttendee = referralCode.get().getAttendee();
 
-                    Point point = pointService.createPoint(referrerAttendee, 10000);
+                    Point point = pointService.createPoint(referrerAttendee, 10000, true);
 
                     referrerAttendee.getPoints().add(point);
 

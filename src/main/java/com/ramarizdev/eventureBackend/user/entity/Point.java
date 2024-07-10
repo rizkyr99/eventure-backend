@@ -30,8 +30,7 @@ public class Point {
     @Column(name = "collection_date", nullable = false, updatable = false)
     private LocalDate collectionDate;
 
-    @NotNull
-    @Column(name = "expiration_date", nullable = false)
+    @Column(name = "expiration_date")
     private LocalDate expirationDate;
 
     @ManyToOne(cascade = CascadeType.ALL)
