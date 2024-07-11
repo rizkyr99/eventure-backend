@@ -81,6 +81,9 @@ public class EventServiceImpl implements EventService {
                     Optional<Double> lowestPrice = eventRepository.findLowestTicketPrice(event.getId());
                     lowestPrice.ifPresent(summaryDto::setLowestPrice);
 
+                    String imageUrl = cloudinary.url().format("png").secure(true).generate(event.getImage());
+                    summaryDto.setImage(imageUrl);
+
                     return summaryDto;
                 }
         ).collect(Collectors.toList());
