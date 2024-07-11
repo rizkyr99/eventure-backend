@@ -29,6 +29,6 @@ public class EventSummaryDto {
 
     private String category;
 
-    private Integer lowestPrice;
+    private Double lowestPrice;
 
 }

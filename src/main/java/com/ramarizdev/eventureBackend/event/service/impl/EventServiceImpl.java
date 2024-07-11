@@ -26,6 +26,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -33,6 +34,7 @@ import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -72,7 +74,16 @@ public class EventServiceImpl implements EventService {
 
         Page<Event> eventPage = eventRepository.findAll(spec,pageable);
 
-        List<EventSummaryDto> eventResponseDtos = eventPage.getContent().stream().map(Event::toSummaryDto).collect(Collectors.toList());
+        List<EventSummaryDto> eventResponseDtos = eventPage.getContent().stream().map(
+                event -> {
+                    EventSummaryDto summaryDto = event.toSummaryDto();
+
+                    Optional<Double> lowestPrice = eventRepository.findLowestTicketPrice(event.getId());
+                    lowestPrice.ifPresent(summaryDto::setLowestPrice);
+
+                    return summaryDto;
+                }
+        ).collect(Collectors.toList());
 
         return new PageImpl<>(eventResponseDtos, pageable, eventPage.getTotalElements());
     }
@@ -92,6 +103,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public EventSummaryDto createEvent(EventRequestDto requestDto, Long organizerId) {
         Event event = requestDto.toEntity();
 

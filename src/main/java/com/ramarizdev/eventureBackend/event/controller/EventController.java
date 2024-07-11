@@ -51,7 +51,7 @@ public class EventController {
         return Response.success("Event details fetched", eventDetailsDto);
     }
 
-    @GetMapping("/{eventSlug}")
+    @GetMapping("/slug/{eventSlug}")
     public ResponseEntity<Response<EventDetailsDto>> getEventBySlug(@PathVariable String eventSlug) {
         Event event = eventService.getEventBySlug(eventSlug);
 
