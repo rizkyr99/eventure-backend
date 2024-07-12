@@ -4,6 +4,7 @@ import com.ramarizdev.eventureBackend.category.entity.Category;
 import com.ramarizdev.eventureBackend.event.dto.EventDetailsDto;
 import com.ramarizdev.eventureBackend.event.dto.EventSummaryDto;
 import com.ramarizdev.eventureBackend.order.entity.Order;
+import com.ramarizdev.eventureBackend.user.dto.OrganizerDto;
 import com.ramarizdev.eventureBackend.user.entity.Organizer;
 import com.ramarizdev.eventureBackend.voucher.entity.Voucher;
 import jakarta.persistence.*;
@@ -125,7 +126,14 @@ public class Event {
         responseDto.setLocation(location);
         responseDto.setDescription(description);
         responseDto.setCategory(category.getName());
-        responseDto.setOrganizer(organizer.getName());
+
+        OrganizerDto organizerDto = new OrganizerDto();
+        organizerDto.setId(organizer.getId());
+        organizerDto.setName(organizer.getName());
+        organizerDto.setImage(organizer.getImage());
+        organizerDto.setAddress(organizer.getAddress());
+        responseDto.setOrganizer(organizerDto);
+
         return responseDto;
     }
 }
