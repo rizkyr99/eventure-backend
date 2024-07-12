@@ -1,11 +1,9 @@
 package com.ramarizdev.eventureBackend.event.controller;
 
 import com.ramarizdev.eventureBackend.auth.service.impl.UserDetailsServiceImpl;
-import com.ramarizdev.eventureBackend.event.dto.EventDetailsDto;
-import com.ramarizdev.eventureBackend.event.dto.EventRequestDto;
-import com.ramarizdev.eventureBackend.event.dto.EventSummaryDto;
-import com.ramarizdev.eventureBackend.event.dto.ReviewDto;
+import com.ramarizdev.eventureBackend.event.dto.*;
 import com.ramarizdev.eventureBackend.event.entity.Event;
+import com.ramarizdev.eventureBackend.event.entity.TicketType;
 import com.ramarizdev.eventureBackend.event.service.impl.EventServiceImpl;
 import com.ramarizdev.eventureBackend.event.service.impl.ReviewServiceImpl;
 import com.ramarizdev.eventureBackend.response.Response;
@@ -85,6 +83,13 @@ public class EventController {
 
         eventService.deleteEvent(eventId, email);
         return Response.success("Event deleted successfully");
+    }
+
+    @GetMapping("/{eventId}/tickets")
+    public ResponseEntity<Response<List<TicketTypeDto>>> getTicketTypesByEventId(@PathVariable Long eventId) {
+        List<TicketTypeDto> ticketTypes = eventService.getTicketTypesByEventId(eventId);
+
+        return Response.success("Successfully fetched ticket types for event with ID: " + eventId, ticketTypes);
     }
 
     @GetMapping("/{eventId}/reviews")

@@ -1,5 +1,6 @@
 package com.ramarizdev.eventureBackend.event.entity;
 
+import com.ramarizdev.eventureBackend.event.dto.TicketTypeDto;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -30,4 +31,15 @@ public class TicketType {
     @ManyToOne
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
+
+    public TicketTypeDto toDto() {
+        TicketTypeDto ticketTypeDto = new TicketTypeDto();
+
+        ticketTypeDto.setId(id);
+        ticketTypeDto.setName(name);
+        ticketTypeDto.setPrice(price);
+        ticketTypeDto.setQuantity(quantity);
+
+        return ticketTypeDto;
+    }
 }
