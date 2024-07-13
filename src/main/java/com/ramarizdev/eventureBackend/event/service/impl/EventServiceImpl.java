@@ -52,7 +52,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Page<EventSummaryDto> getAllEvents(String categorySlug, String location, boolean isFree, String search, int page, int size) {
+    public Page<EventSummaryDto> getAllEvents(String categorySlug, String location, Boolean isFree, String search, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
 
         Specification<Event> spec = Specification.where(null);
@@ -63,7 +63,10 @@ public class EventServiceImpl implements EventService {
         if (location != null && !location.isEmpty()) {
             spec = spec.and(EventSpecification.hasLocation(location));
         }
-        spec = spec.and(EventSpecification.isFree(isFree));
+
+        if (isFree != null) {
+            spec = spec.and(EventSpecification.isFree(isFree));
+        }
 
         if (search != null && !search.isEmpty()) {
             spec = spec.and(EventSpecification.containsKeyword(search));

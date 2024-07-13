@@ -35,7 +35,7 @@ public class EventController {
     }
 
     @GetMapping()
-    public ResponseEntity<Response<Page<EventSummaryDto>>> getAllEvents(@RequestParam(required = false) String category, @RequestParam(required = false) String location, @RequestParam(required = false, defaultValue = "false") boolean isFree, @RequestParam(required = false) String search, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<Response<Page<EventSummaryDto>>> getAllEvents(@RequestParam(required = false) String category, @RequestParam(required = false) String location, @RequestParam(required = false) Boolean isFree, @RequestParam(required = false) String search, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size) {
         Page<EventSummaryDto> events = eventService.getAllEvents(category, location, isFree, search, page - 1, size);
         return Response.success("List of events fetched", events);
     }
