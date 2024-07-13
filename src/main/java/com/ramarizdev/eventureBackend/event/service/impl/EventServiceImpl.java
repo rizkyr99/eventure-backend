@@ -120,17 +120,23 @@ public class EventServiceImpl implements EventService {
         Organizer organizer = organizerRepository.findById(organizerId).orElseThrow(() -> new IllegalArgumentException("Organizer not found"));
         event.setOrganizer(organizer);
 
-        List<TicketType> ticketTypes = requestDto.getTicketTypes().stream().map(
-                ticketType -> {
-                    TicketType ticketType1 = new TicketType();
-                    ticketType1.setName(ticketType.getName());
-                    ticketType1.setPrice(ticketType.getPrice());
-                    ticketType1.setQuantity(ticketType.getQuantity());
-                    ticketType1.setEvent(event);
-                    return ticketType1;
-                }).collect(Collectors.toList());
+        if(!requestDto.isFree()) {
+            if(requestDto.getTicketTypes() != null) {
+                List<TicketType> ticketTypes = requestDto.getTicketTypes().stream().map(
+                        ticketType -> {
+                            TicketType ticketType1 = new TicketType();
+                            ticketType1.setName(ticketType.getName());
+                            ticketType1.setPrice(ticketType.getPrice());
+                            ticketType1.setQuantity(ticketType.getQuantity());
+                            ticketType1.setEvent(event);
+                            return ticketType1;
+                        }).collect(Collectors.toList());
 
-        event.setTicketTypes(ticketTypes);
+                event.setTicketTypes(ticketTypes);
+            }
+
+        }
+
 
         Event newEvent = eventRepository.save(event);
 

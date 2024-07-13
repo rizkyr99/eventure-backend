@@ -45,6 +45,9 @@ public class EventRequestDto {
     @NotNull
     private Long category;
 
+    @NotNull
+    private boolean isFree;
+
     private List<TicketType> ticketTypes;
 
     public Event toEntity() {
@@ -57,6 +60,7 @@ public class EventRequestDto {
         event.setEndTime(endTime);
         event.setLocation(location);
         event.setDescription(description);
+        event.setIsFree(isFree);
         return event;
     }
 }
