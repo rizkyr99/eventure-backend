@@ -77,6 +77,7 @@ public class SecurityConfig {
                     auth.requestMatchers(HttpMethod.POST,"/api/v1/events/**").hasRole(UserRole.ORGANIZER.name());
                     auth.requestMatchers("/api/v1/users/register").permitAll();
                     auth.requestMatchers("/api/v1/orders").hasRole(UserRole.ATTENDEE.name());
+                    auth.requestMatchers("/api/v1/organizer/**").hasRole(UserRole.ORGANIZER.name());
                     auth.anyRequest().authenticated();
                 })
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
