@@ -72,7 +72,7 @@ public class Event {
 
     @NotNull
     @Column(name = "is_free", nullable = false)
-    private Boolean isFree = false;
+    private Boolean isFree;
 
     @ManyToOne
     @JoinColumn(name = "organizer_id", nullable = false)

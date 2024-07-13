@@ -46,7 +46,7 @@ public class EventRequestDto {
     private Long category;
 
     @NotNull
-    private boolean isFree;
+    private Boolean isFree;
 
     private List<TicketType> ticketTypes;
 

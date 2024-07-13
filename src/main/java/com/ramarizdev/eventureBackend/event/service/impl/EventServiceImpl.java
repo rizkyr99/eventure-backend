@@ -120,7 +120,7 @@ public class EventServiceImpl implements EventService {
         Organizer organizer = organizerRepository.findById(organizerId).orElseThrow(() -> new IllegalArgumentException("Organizer not found"));
         event.setOrganizer(organizer);
 
-        if(!requestDto.isFree()) {
+        if(!requestDto.getIsFree()) {
             if(requestDto.getTicketTypes() != null) {
                 List<TicketType> ticketTypes = requestDto.getTicketTypes().stream().map(
                         ticketType -> {
