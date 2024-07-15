@@ -1,5 +1,6 @@
 package com.ramarizdev.eventureBackend.event.controller;
 
+import com.cloudinary.Cloudinary;
 import com.ramarizdev.eventureBackend.auth.service.impl.UserDetailsServiceImpl;
 import com.ramarizdev.eventureBackend.event.dto.*;
 import com.ramarizdev.eventureBackend.event.entity.Event;
@@ -27,11 +28,13 @@ public class EventController {
     private final EventServiceImpl eventService;
     private final ReviewServiceImpl reviewService;
     private final UserDetailsServiceImpl userDetailsService;
+    private final Cloudinary cloudinary;
 
-    public EventController(EventServiceImpl eventService, ReviewServiceImpl reviewService, UserDetailsServiceImpl userDetailsService) {
+    public EventController(EventServiceImpl eventService, ReviewServiceImpl reviewService, UserDetailsServiceImpl userDetailsService, Cloudinary cloudinary) {
         this.eventService = eventService;
         this.reviewService = reviewService;
         this.userDetailsService = userDetailsService;
+        this.cloudinary = cloudinary;
     }
 
     @GetMapping()
@@ -45,6 +48,8 @@ public class EventController {
         Event event = eventService.getEventDetails(eventId);
 
         EventDetailsDto eventDetailsDto = event.toDetailsDto();
+        String imageUrl = cloudinary.url().format("png").secure(true).generate(event.getImage());
+        eventDetailsDto.setImage(imageUrl);
 
         return Response.success("Event details fetched", eventDetailsDto);
     }
@@ -54,6 +59,8 @@ public class EventController {
         Event event = eventService.getEventBySlug(eventSlug);
 
         EventDetailsDto eventDetailsDto = event.toDetailsDto();
+        String imageUrl = cloudinary.url().format("png").secure(true).generate(event.getImage());
+        eventDetailsDto.setImage(imageUrl);
 
         return Response.success("Event details fetched", eventDetailsDto);
     }
