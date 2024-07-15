@@ -1,5 +1,6 @@
 package com.ramarizdev.eventureBackend.order.dto;
 
+import com.ramarizdev.eventureBackend.voucher.dto.CreateVoucherDto;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -20,6 +21,8 @@ public class OrderDto {
     @NotNull
     @Size(min = 1, message = "Order must contain at least one item")
     private List<OrderItemDto> orderItems;
+
+    private List<Long> voucherIds;
 
     @NotNull
     private BigDecimal totalPrice;

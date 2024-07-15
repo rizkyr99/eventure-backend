@@ -2,7 +2,7 @@ package com.ramarizdev.eventureBackend.voucher.service.impl;
 
 import com.ramarizdev.eventureBackend.event.entity.Event;
 import com.ramarizdev.eventureBackend.event.repository.EventRepository;
-import com.ramarizdev.eventureBackend.voucher.dto.VoucherDto;
+import com.ramarizdev.eventureBackend.voucher.dto.CreateVoucherDto;
 import com.ramarizdev.eventureBackend.voucher.entity.Voucher;
 import com.ramarizdev.eventureBackend.voucher.entity.VoucherType;
 import com.ramarizdev.eventureBackend.voucher.repository.VoucherRepository;
@@ -23,7 +23,7 @@ public class VoucherServiceImpl implements VoucherService {
     }
 
     @Override
-    public Voucher createVoucher(Long eventId, VoucherDto voucherDto) {
+    public Voucher createVoucher(Long eventId, CreateVoucherDto voucherDto) {
         if(voucherDto.getType().equals(VoucherType.REFERRAL)) {
             voucherDto.setAmount(10);
         }
@@ -35,6 +35,11 @@ public class VoucherServiceImpl implements VoucherService {
         voucher.setEvent(event);
 
         return voucherRepository.save(voucher);
+    }
+
+    @Override
+    public Voucher getVoucherById(Long voucherId) {
+        return voucherRepository.findById(voucherId).orElseThrow(() -> new EntityNotFoundException("Voucher ID not valid"));
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.ramarizdev.eventureBackend.voucher.controller;
 
 import com.ramarizdev.eventureBackend.response.Response;
-import com.ramarizdev.eventureBackend.voucher.dto.VoucherDto;
+import com.ramarizdev.eventureBackend.voucher.dto.CreateVoucherDto;
 import com.ramarizdev.eventureBackend.voucher.entity.Voucher;
 import com.ramarizdev.eventureBackend.voucher.service.VoucherService;
 import jakarta.validation.Valid;
@@ -28,7 +28,7 @@ public class VoucherController {
     }
 
     @PostMapping()
-    public Voucher createVoucher(@Valid @PathVariable Long eventId, @RequestBody VoucherDto voucherDto) {
+    public Voucher createVoucher(@Valid @PathVariable Long eventId, @RequestBody CreateVoucherDto voucherDto) {
         return voucherService.createVoucher(eventId, voucherDto);
     }
 }

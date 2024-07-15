@@ -2,17 +2,14 @@ package com.ramarizdev.eventureBackend.voucher.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ramarizdev.eventureBackend.event.entity.Event;
-import com.ramarizdev.eventureBackend.user.entity.Attendee;
-import com.ramarizdev.eventureBackend.voucher.dto.VoucherDto;
+import com.ramarizdev.eventureBackend.voucher.dto.CreateVoucherDto;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -51,8 +48,8 @@ public class Voucher {
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-    public VoucherDto toDto() {
-        VoucherDto voucherDto = new VoucherDto();
+    public CreateVoucherDto toDto() {
+        CreateVoucherDto voucherDto = new CreateVoucherDto();
 
         voucherDto.setId(id);
         voucherDto.setType(type);

@@ -13,6 +13,9 @@ import com.ramarizdev.eventureBackend.user.entity.Attendee;
 import com.ramarizdev.eventureBackend.user.entity.Point;
 import com.ramarizdev.eventureBackend.user.service.impl.AttendeeServiceImpl;
 import com.ramarizdev.eventureBackend.user.service.impl.PointServiceImpl;
+import com.ramarizdev.eventureBackend.voucher.dto.CreateVoucherDto;
+import com.ramarizdev.eventureBackend.voucher.entity.Voucher;
+import com.ramarizdev.eventureBackend.voucher.service.impl.VoucherServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,13 +30,15 @@ public class OrderServiceImpl implements OrderService {
     private final EventServiceImpl eventService;
     private final TicketTypeService ticketTypeService;
     private final PointServiceImpl pointService;
+    private final VoucherServiceImpl voucherService;
     private final OrderRepository orderRepository;
 
-    public OrderServiceImpl(AttendeeServiceImpl attendeeService, EventServiceImpl eventService, TicketTypeService ticketTypeService, PointServiceImpl pointService, OrderRepository orderRepository) {
+    public OrderServiceImpl(AttendeeServiceImpl attendeeService, EventServiceImpl eventService, TicketTypeService ticketTypeService, PointServiceImpl pointService, VoucherServiceImpl voucherService, OrderRepository orderRepository) {
         this.attendeeService = attendeeService;
         this.eventService = eventService;
         this.ticketTypeService = ticketTypeService;
         this.pointService = pointService;
+        this.voucherService = voucherService;
         this.orderRepository = orderRepository;
     }
 
@@ -79,6 +84,9 @@ public class OrderServiceImpl implements OrderService {
                 }
         ).collect(Collectors.toList());
 
+        List<Voucher> vouchers = orderDto.getVoucherIds().stream().map(voucherService::getVoucherById).collect(Collectors.toList());
+
+        order.setVouchers(vouchers);
         order.setOrderItems(orderItems);
         order.setTotalPrice(orderDto.getTotalPrice());
 

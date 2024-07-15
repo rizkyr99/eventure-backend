@@ -2,14 +2,13 @@ package com.ramarizdev.eventureBackend.voucher.dto;
 
 import com.ramarizdev.eventureBackend.voucher.entity.Voucher;
 import com.ramarizdev.eventureBackend.voucher.entity.VoucherType;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
 
 @Data
-public class VoucherDto {
+public class CreateVoucherDto {
     private Long id;
 
     @NotNull
