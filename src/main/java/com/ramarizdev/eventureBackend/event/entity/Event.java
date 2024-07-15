@@ -14,6 +14,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -125,6 +126,12 @@ public class Event {
         responseDto.setEndTime(endTime);
         responseDto.setLocation(location);
         responseDto.setDescription(description);
+        responseDto.setIsFree(isFree);
+
+        BigDecimal lowestPrice = ticketTypes.stream().map(TicketType::getPrice).min(BigDecimal::compareTo).orElse(null);
+        if (lowestPrice != null) {
+            responseDto.setLowestPrice(lowestPrice.doubleValue());
+        }
         responseDto.setCategory(category.getName());
 
         OrganizerDto organizerDto = new OrganizerDto();

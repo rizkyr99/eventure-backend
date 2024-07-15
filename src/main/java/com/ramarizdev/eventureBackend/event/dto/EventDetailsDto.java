@@ -19,5 +19,7 @@ public class EventDetailsDto {
     private String location;
     private String description;
     private String category;
+    private Boolean isFree;
+    private Double lowestPrice;
     private OrganizerDto organizer;
 }
