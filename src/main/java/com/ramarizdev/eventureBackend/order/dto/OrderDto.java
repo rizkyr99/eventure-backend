@@ -12,7 +12,6 @@ import java.util.List;
 public class OrderDto {
     private Long id;
 
-    @NotNull
     private Long attendeeId;
 
     @NotNull

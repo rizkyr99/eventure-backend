@@ -44,13 +44,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderDto createOrder(OrderDto orderDto) {
+    public OrderDto createOrder(OrderDto orderDto, String email) {
         Order order = new Order();
 
         Event event = eventService.getEventDetails(orderDto.getEventId());
         order.setEvent(event);
 
-        Attendee attendee = attendeeService.getAttendeeById(orderDto.getAttendeeId());
+        Attendee attendee = attendeeService.getAttendeeByEmail(email);
         order.setAttendee(attendee);
 
         BigDecimal usedPoints = BigDecimal.ZERO;
