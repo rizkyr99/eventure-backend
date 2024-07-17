@@ -11,6 +11,7 @@ import java.util.List;
 
 public interface EventService {
     Page<EventSummaryDto> getAllEvents(String categorySlug, String location, Boolean isFree, String search, int page, int size);
+    List<EventSummaryDto> getUpcomingEvents();
     Event getEventDetails(Long id);
     Event getEventBySlug(String slug);
     EventSummaryDto createEvent(EventRequestDto eventRequestDto, Long organizerId);

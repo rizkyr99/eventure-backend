@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,6 +90,17 @@ public class EventServiceImpl implements EventService {
         ).collect(Collectors.toList());
 
         return new PageImpl<>(eventResponseDtos, pageable, eventPage.getTotalElements());
+    }
+
+    @Override
+    public List<EventSummaryDto> getUpcomingEvents() {
+        LocalDate now = LocalDate.now();
+
+        List<Event> events = eventRepository.findUpcomingEvents(now);
+
+        List<EventSummaryDto> eventSummaryDtos = events.stream().map(Event::toSummaryDto).collect(Collectors.toList());
+
+        return eventSummaryDtos;
     }
 
     @Override

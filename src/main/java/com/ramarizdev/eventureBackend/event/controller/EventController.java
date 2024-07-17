@@ -43,6 +43,13 @@ public class EventController {
         return Response.success("List of events fetched", events);
     }
 
+    @GetMapping("/upcoming")
+    public ResponseEntity<Response<List<EventSummaryDto>>> getUpcomingEvents() {
+        List<EventSummaryDto> events = eventService.getUpcomingEvents();
+
+        return Response.success("List of upcoming events fetched", events);
+    }
+
     @GetMapping("/{eventId}")
     public ResponseEntity<Response<EventDetailsDto>> getEventDetails(@PathVariable Long eventId) {
         Event event = eventService.getEventDetails(eventId);
