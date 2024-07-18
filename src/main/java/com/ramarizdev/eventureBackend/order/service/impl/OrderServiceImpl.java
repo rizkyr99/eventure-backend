@@ -53,6 +53,10 @@ public class OrderServiceImpl implements OrderService {
         Attendee attendee = attendeeService.getAttendeeByEmail(email);
         order.setAttendee(attendee);
 
+        if(orderRepository.findByAttendeeAndEvent(attendee, event).isPresent()) {
+            throw new IllegalArgumentException("User has already purchased a ticket for this event.");
+        }
+
         BigDecimal usedPoints = BigDecimal.ZERO;
 
         if(orderDto.isUsePoints()) {
