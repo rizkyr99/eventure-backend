@@ -1,5 +1,6 @@
 package com.ramarizdev.eventureBackend.event.entity;
 
+import com.ramarizdev.eventureBackend.category.dto.CategoryResponseDto;
 import com.ramarizdev.eventureBackend.category.entity.Category;
 import com.ramarizdev.eventureBackend.event.dto.EventDetailsDto;
 import com.ramarizdev.eventureBackend.event.dto.EventSummaryDto;
@@ -132,7 +133,9 @@ public class Event {
         if (lowestPrice != null) {
             responseDto.setLowestPrice(lowestPrice.doubleValue());
         }
-        responseDto.setCategory(category.getName());
+
+        CategoryResponseDto categoryResponseDto = category.toDto();
+        responseDto.setCategory(categoryResponseDto);
 
         OrganizerDto organizerDto = new OrganizerDto();
         organizerDto.setId(organizer.getId());

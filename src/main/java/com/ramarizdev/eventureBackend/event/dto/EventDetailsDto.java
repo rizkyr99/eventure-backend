@@ -1,5 +1,6 @@
 package com.ramarizdev.eventureBackend.event.dto;
 
+import com.ramarizdev.eventureBackend.category.dto.CategoryResponseDto;
 import com.ramarizdev.eventureBackend.user.dto.OrganizerDto;
 import lombok.Data;
 
@@ -18,7 +19,7 @@ public class EventDetailsDto {
     private LocalTime endTime;
     private String location;
     private String description;
-    private String category;
+    private CategoryResponseDto category;
     private Boolean isFree;
     private Double lowestPrice;
     private OrganizerDto organizer;

@@ -1,6 +1,7 @@
 package com.ramarizdev.eventureBackend.category.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ramarizdev.eventureBackend.category.dto.CategoryResponseDto;
 import com.ramarizdev.eventureBackend.event.entity.Event;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -35,4 +36,14 @@ public class Category {
     @JsonIgnore
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Event> events;
+
+    public CategoryResponseDto toDto() {
+        CategoryResponseDto responseDto = new CategoryResponseDto();
+
+        responseDto.setId(id);
+        responseDto.setName(name);
+        responseDto.setSlug(slug);
+
+        return responseDto;
+    }
 }
