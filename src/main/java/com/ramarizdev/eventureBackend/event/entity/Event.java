@@ -68,7 +68,7 @@ public class Event {
     private String location;
 
     @NotNull
-    @Column(name = "description", nullable = false)
+    @Column(name = "description", nullable = false, columnDefinition = "text")
     private String description;
 
     @NotNull

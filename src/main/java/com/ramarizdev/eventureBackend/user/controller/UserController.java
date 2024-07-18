@@ -1,5 +1,6 @@
 package com.ramarizdev.eventureBackend.user.controller;
 
+import com.ramarizdev.eventureBackend.event.dto.EventSummaryDto;
 import com.ramarizdev.eventureBackend.response.Response;
 import com.ramarizdev.eventureBackend.user.dto.RegisterRequestDto;
 import com.ramarizdev.eventureBackend.user.dto.UserDetailsDto;
@@ -12,6 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -38,5 +41,10 @@ public class UserController {
         UserDetailsDto userDetailsDto = userService.getUserProfile(email);
 
         return Response.success("User profile fetched", userDetailsDto);
+    }
+
+    @GetMapping("/events")
+    public ResponseEntity<Response<List<EventSummaryDto>>> getUserEvents() {
+        return Response.success("List of user events fetched");
     }
 }
