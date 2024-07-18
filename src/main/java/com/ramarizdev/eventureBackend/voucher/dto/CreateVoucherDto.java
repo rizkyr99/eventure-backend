@@ -26,6 +26,9 @@ public class CreateVoucherDto {
     @NotNull
     private Integer currentUses;
 
+    @NotNull
+    private Long eventId;
+
     public Voucher toEntity() {
         Voucher voucher = new Voucher();
 

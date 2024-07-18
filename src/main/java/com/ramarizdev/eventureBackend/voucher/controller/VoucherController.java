@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/events/{eventId}/vouchers")
+@RequestMapping("/api/v1/vouchers")
 @Validated
 public class VoucherController {
     private final VoucherService voucherService;
@@ -21,14 +21,9 @@ public class VoucherController {
         this.voucherService = voucherService;
     }
 
-    @GetMapping()
-    public ResponseEntity<Response<List<Voucher>>> getAllVouchers(@PathVariable Long eventId) {
-        List<Voucher> vouchers = voucherService.getAllVouchers(eventId);
-        return Response.success("List of vouchers fetched", vouchers);
-    }
-
     @PostMapping()
-    public Voucher createVoucher(@Valid @PathVariable Long eventId, @RequestBody CreateVoucherDto voucherDto) {
-        return voucherService.createVoucher(eventId, voucherDto);
+    public ResponseEntity<Response<CreateVoucherDto>> createVoucher(@Valid @RequestBody CreateVoucherDto voucherDto) {
+        CreateVoucherDto voucher = voucherService.createVoucher(voucherDto);
+        return Response.success("Voucher created successfully", voucher);
     }
 }

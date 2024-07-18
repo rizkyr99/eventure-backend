@@ -6,7 +6,7 @@ import com.ramarizdev.eventureBackend.voucher.entity.Voucher;
 import java.util.List;
 
 public interface VoucherService {
-    Voucher createVoucher(Long eventId, CreateVoucherDto voucherDto);
+    CreateVoucherDto createVoucher(CreateVoucherDto voucherDto);
     Voucher getVoucherById(Long voucherId);
     List<Voucher> getAllVouchers(Long eventId);
 }

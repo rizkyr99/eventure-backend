@@ -8,6 +8,8 @@ import com.ramarizdev.eventureBackend.event.entity.TicketType;
 import com.ramarizdev.eventureBackend.event.service.impl.EventServiceImpl;
 import com.ramarizdev.eventureBackend.event.service.impl.ReviewServiceImpl;
 import com.ramarizdev.eventureBackend.response.Response;
+import com.ramarizdev.eventureBackend.voucher.entity.Voucher;
+import com.ramarizdev.eventureBackend.voucher.service.impl.VoucherServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -28,12 +30,14 @@ public class EventController {
     private final EventServiceImpl eventService;
     private final ReviewServiceImpl reviewService;
     private final UserDetailsServiceImpl userDetailsService;
+    private final VoucherServiceImpl voucherService;
     private final Cloudinary cloudinary;
 
-    public EventController(EventServiceImpl eventService, ReviewServiceImpl reviewService, UserDetailsServiceImpl userDetailsService, Cloudinary cloudinary) {
+    public EventController(EventServiceImpl eventService, ReviewServiceImpl reviewService, UserDetailsServiceImpl userDetailsService, VoucherServiceImpl voucherService, Cloudinary cloudinary) {
         this.eventService = eventService;
         this.reviewService = reviewService;
         this.userDetailsService = userDetailsService;
+        this.voucherService = voucherService;
         this.cloudinary = cloudinary;
     }
 
@@ -112,5 +116,10 @@ public class EventController {
         return Response.success("Successfully fetched review for event with ID: " + eventId, reviewDtos);
     }
 
+    @GetMapping("/{eventId}/vouchers")
+    public ResponseEntity<Response<List<Voucher>>> getAllVouchers(@PathVariable Long eventId) {
+        List<Voucher> vouchers = voucherService.getAllVouchers(eventId);
+        return Response.success("List of vouchers fetched", vouchers);
+    }
 
 }

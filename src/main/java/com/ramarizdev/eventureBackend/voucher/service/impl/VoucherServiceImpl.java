@@ -23,18 +23,20 @@ public class VoucherServiceImpl implements VoucherService {
     }
 
     @Override
-    public Voucher createVoucher(Long eventId, CreateVoucherDto voucherDto) {
+    public CreateVoucherDto createVoucher(CreateVoucherDto voucherDto) {
         if(voucherDto.getType().equals(VoucherType.REFERRAL)) {
             voucherDto.setAmount(10);
         }
 
         Voucher voucher = voucherDto.toEntity();
 
-        Event event = eventRepository.findById(eventId).orElseThrow(() -> new EntityNotFoundException("Event not found"));
+        Event event = eventRepository.findById(voucherDto.getEventId()).orElseThrow(() -> new EntityNotFoundException("Event not found"));
 
         voucher.setEvent(event);
 
-        return voucherRepository.save(voucher);
+        Voucher newVoucher = voucherRepository.save(voucher);
+
+        return newVoucher.toDto();
     }
 
     @Override
