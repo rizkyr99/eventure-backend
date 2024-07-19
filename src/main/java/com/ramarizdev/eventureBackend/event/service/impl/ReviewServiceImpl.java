@@ -10,6 +10,7 @@ import com.ramarizdev.eventureBackend.user.service.impl.AttendeeServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -34,6 +35,12 @@ public class ReviewServiceImpl implements ReviewService {
         review.setRating(reviewDto.getRating());
 
         Event event = eventService.getEventDetails(reviewDto.getEventId());
+
+        Optional<Review> existingReview = reviewRepository.findByAttendeeAndEvent(attendee, event);
+        if(existingReview.isPresent()) {
+            throw new IllegalArgumentException("User has already rated this event.");
+        }
+
         review.setEvent(event);
 
         review.setAttendee(attendee);
