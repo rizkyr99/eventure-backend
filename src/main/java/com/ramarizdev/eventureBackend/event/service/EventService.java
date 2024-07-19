@@ -4,6 +4,7 @@ import com.ramarizdev.eventureBackend.event.dto.*;
 import com.ramarizdev.eventureBackend.event.entity.Event;
 import com.ramarizdev.eventureBackend.event.entity.Review;
 import com.ramarizdev.eventureBackend.event.entity.TicketType;
+import com.ramarizdev.eventureBackend.user.entity.Attendee;
 import org.springframework.data.domain.Page;
 
 import java.nio.file.AccessDeniedException;
@@ -18,5 +19,6 @@ public interface EventService {
     EventSummaryDto updateEvent(Long eventId, EventRequestDto eventRequestDto, String email) throws AccessDeniedException;
     List<ReviewDto> getEventReviews(Long eventId);
     List<TicketTypeDto> getTicketTypesByEventId(Long eventId);
+    List<EventSummaryDto> getUserEvents(Attendee attendee);
     void deleteEvent(Long eventId, String currentUserEmail) throws AccessDeniedException;
 }

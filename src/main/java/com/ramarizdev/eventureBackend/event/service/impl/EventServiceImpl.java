@@ -10,6 +10,7 @@ import com.ramarizdev.eventureBackend.event.entity.TicketType;
 import com.ramarizdev.eventureBackend.event.repository.EventRepository;
 import com.ramarizdev.eventureBackend.event.service.EventService;
 import com.ramarizdev.eventureBackend.event.specification.EventSpecification;
+import com.ramarizdev.eventureBackend.user.entity.Attendee;
 import com.ramarizdev.eventureBackend.user.entity.Organizer;
 import com.ramarizdev.eventureBackend.user.entity.User;
 import com.ramarizdev.eventureBackend.user.repository.OrganizerRepository;
@@ -236,6 +237,24 @@ public class EventServiceImpl implements EventService {
         List<TicketTypeDto> ticketTypeDtos = event.getTicketTypes().stream().map(TicketType::toDto).collect(Collectors.toList());
 
         return ticketTypeDtos;
+    }
+
+    @Override
+    public List<EventSummaryDto> getUserEvents(Attendee attendee) {
+        return attendee.getOrders().stream().map(
+                order -> {
+                    Event event = order.getEvent();
+                    EventSummaryDto summaryDto = event.toSummaryDto();
+
+                    Optional<Double> lowestPrice = eventRepository.findLowestTicketPrice(event.getId());
+                    lowestPrice.ifPresent(summaryDto::setLowestPrice);
+
+                    String imageUrl = cloudinary.url().format("png").secure(true).generate(event.getImage());
+                    summaryDto.setImage(imageUrl);
+
+                    return summaryDto;
+                }
+        ).collect(Collectors.toList());
     }
 
     @Override
