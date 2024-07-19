@@ -60,4 +60,8 @@ public class Voucher {
 
         return voucherDto;
     }
+
+    public boolean isReferral() {
+        return VoucherType.REFERRAL.equals(type);
+    }
 }

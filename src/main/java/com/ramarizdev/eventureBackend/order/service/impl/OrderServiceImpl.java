@@ -43,6 +43,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public boolean hasUsedReferralVoucher(Long attendeeId) {
+        List<Order> orders = orderRepository.findByAttendeeId(attendeeId);
+        return orders.stream().anyMatch(Order::hasReferralVoucher);
+    }
+
+    @Override
     @Transactional
     public OrderDto createOrder(OrderDto orderDto, String email) {
         Order order = new Order();
@@ -89,6 +95,11 @@ public class OrderServiceImpl implements OrderService {
         ).collect(Collectors.toList());
 
         List<Voucher> vouchers = orderDto.getVoucherIds().stream().map(voucherService::getVoucherById).collect(Collectors.toList());
+        if(vouchers.stream().anyMatch(Voucher::isReferral)) {
+            if(hasUsedReferralVoucher(orderDto.getAttendeeId())) {
+                throw new IllegalArgumentException("Referral voucher has already been used.");
+            }
+        }
 
         order.setVouchers(vouchers);
         order.setOrderItems(orderItems);

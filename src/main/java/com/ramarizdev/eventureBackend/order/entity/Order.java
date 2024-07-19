@@ -75,6 +75,10 @@ public class Order {
         return orderDto;
     }
 
+    public boolean hasReferralVoucher() {
+        return vouchers.stream().anyMatch(Voucher::isReferral);
+    }
+
     @PrePersist
     public void prePersist() {
         orderDate = Instant.now();
